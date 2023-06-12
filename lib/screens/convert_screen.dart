@@ -140,7 +140,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
       selectedImages = await picker.pickMultiImage();
       if (files.isNotEmpty) {
         // files.addAll(duplicates.map((e) => File(e!)).toList());
-        files.addAll(selectedImages as Iterable<CroppedFile>);
+        files.addAll(selectedImages as Iterable);
       } else {
         // files.add(result.path.map((e) => File(e!)).toList());
         files.addAll(selectedImages as Iterable);
