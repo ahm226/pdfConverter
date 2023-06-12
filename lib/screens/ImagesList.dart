@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:open_file/open_file.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -103,7 +102,7 @@ class _ImagesListState extends State<ImagesList> {
           );
   }
 
-  void viewFile(CroppedFile file) {
+  void viewFile(dynamic file) {
     OpenFile.open(file.path);
   }
 }

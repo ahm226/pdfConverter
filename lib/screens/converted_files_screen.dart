@@ -19,7 +19,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
   late String directory;
   List file = [];
   bool isLoading = false;
-  bool isList = true;
+  bool isList = false;
 
   getData() {
     setState(() {
@@ -60,7 +60,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 20),
                 child: Column(
                   children: [
                     Padding(
@@ -96,73 +96,79 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                           crossAxisCount: 2),
                                   itemCount: file.length,
                                   itemBuilder: (context, index) {
-                                    return Card(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          const SizedBox(
-                                            width: 59,
-                                            height: 70,
-                                            child: Icon(
-                                              Icons.picture_as_pdf_sharp,
-                                              color: Colors.redAccent,
-                                              size: 60,
-                                            ),
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(file[index]
-                                                      .path
-                                                      .toString()
-                                                      .split("/")
-                                                      .last),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      IconButton(
-                                                        onPressed: () async {
-                                                          Share.shareFiles([
-                                                            '${file[index].path}'
-                                                          ],
-                                                              text: file[index]
-                                                                  .path
-                                                                  .toString()
-                                                                  .split("/")
-                                                                  .last);
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.share,
-                                                        ),
-                                                        color: Colors.grey,
-                                                      ),
-                                                      IconButton(
-                                                        onPressed: () async {
-                                                          await deleteConvertedFileDailog(
-                                                              context,
-                                                              file[index].path,
-                                                              index);
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.delete,
-                                                        ),
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                    return InkWell(
+                                      onTap: () =>
+                                          viewConvertedFiles(file[index].path),
+                                      child: Card(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const SizedBox(
+                                              width: 59,
+                                              height: 70,
+                                              child: Icon(
+                                                Icons.picture_as_pdf_sharp,
+                                                color: Colors.redAccent,
+                                                size: 60,
                                               ),
-                                            ],
-                                          ),
-                                        ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(file[index]
+                                                        .path
+                                                        .toString()
+                                                        .split("/")
+                                                        .last),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        IconButton(
+                                                          onPressed: () async {
+                                                            Share.shareFiles([
+                                                              '${file[index].path}'
+                                                            ],
+                                                                text: file[
+                                                                        index]
+                                                                    .path
+                                                                    .toString()
+                                                                    .split("/")
+                                                                    .last);
+                                                          },
+                                                          icon: const Icon(
+                                                            Icons.share,
+                                                          ),
+                                                          color: Colors.grey,
+                                                        ),
+                                                        IconButton(
+                                                          onPressed: () async {
+                                                            await deleteConvertedFileDailog(
+                                                                context,
+                                                                file[index]
+                                                                    .path,
+                                                                index);
+                                                          },
+                                                          icon: const Icon(
+                                                            Icons.delete,
+                                                          ),
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     );
                                   },
