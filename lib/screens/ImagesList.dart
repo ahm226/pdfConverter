@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_file_plus/open_file_plus.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class ImagesList extends StatefulWidget {
@@ -43,7 +43,7 @@ class _ImagesListState extends State<ImagesList> {
                   onTap: () => viewFile(file),
                   child: Card(
                     shadowColor: Colors.white60,
-                    elevation: 8,
+                    elevation: 15,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
                       child: Container(
@@ -79,15 +79,16 @@ class _ImagesListState extends State<ImagesList> {
                               ),
                             ),
                             IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    widget.files.remove(file);
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.cancel,
-                                ),
-                                color: Colors.indigoAccent),
+                              onPressed: () {
+                                setState(() {
+                                  widget.files.remove(file);
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.cancel,
+                              ),
+                              color: const Color(0xFFD50000),
+                            ),
                           ],
                         ),
                       ),
@@ -98,7 +99,12 @@ class _ImagesListState extends State<ImagesList> {
             },
           )
         : const Center(
-            child: Text("No image selected"),
+            child: Text(
+              "No image selected",
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
           );
   }
 

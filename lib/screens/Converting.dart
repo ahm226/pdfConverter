@@ -24,41 +24,81 @@ Future<void> fileNameDailog(
         builder: (context, setState) {
           return AlertDialog(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 30,
             content: Form(
               key: _formKey,
               child: Container(
-                height: 120,
+                height: 160,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   // mainAxisSize: MainAxisSize.max,
                   children: [
-                    Container(
-                      width: 200,
+                    SizedBox(
+                      width: 250,
                       child: TextFormField(
                         controller: _userfilename,
-                        validator: (value) {
-                          return value!.isNotEmpty
-                              ? null
-                              : "File name can't be empty";
-                        },
-                        decoration: const InputDecoration(
-                          hintText: "Enter the file Name",
+                        validator: (val) =>
+                            val!.isEmpty ? "enter a valid name" : null,
+                        decoration: InputDecoration(
+                          hintText: 'File Name',
+                          labelText: 'File Name',
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.2,
+                              fontSize: 12,
+                              color: Colors.black.withOpacity(0.4)),
+                          labelStyle: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.2,
+                              fontSize: 12,
+                              color: Colors.black.withOpacity(0.4)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey.withOpacity(0.2),
+                                width: 1.5),
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey.withOpacity(0.2),
+                                width: 1.5),
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.red.withOpacity(0.8), width: 1.5),
+                            borderRadius: BorderRadius.circular(7),
+                          ),
                         ),
                       ),
                     ),
+                    // Container(
+                    //   width: 250,
+                    //   child: TextFormField(
+                    //     controller: _userfilename,
+                    //     validator: (value) {
+                    //       return value!.isNotEmpty
+                    //           ? null
+                    //           : "File name can't be empty";
+                    //     },
+                    //     decoration: const InputDecoration(
+                    //       border: UnderlineInputBorder(),
+                    //       hintText: "Enter the file Name",
+                    //     ),
+                    //   ),
+                    // ),
                     Container(
-                      width: 200,
+                      width: 250,
                       child: DropdownButton(
                         hint: _dropDownValue == null
-                            ? const Text('a4')
+                            ? const Text('A4')
                             : Text(
                                 _dropDownValue,
                               ),
                         isExpanded: true,
                         iconSize: 30.0,
-                        items: ['a3', 'a4', 'a5', 'a6'].map(
+                        items: ['A3', 'A4', 'A5', 'A6'].map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -74,30 +114,16 @@ Future<void> fileNameDailog(
                           );
                         },
                       ),
-                      // TextFormField(
-                      //   controller: _userfilename,
-                      //   validator: (value) {
-                      //     return value!.isNotEmpty
-                      //         ? null
-                      //         : "File name can't be empty";
-                      //   },
-                      //   decoration: const InputDecoration(
-                      //     hintText: "Enter the file Name",
-                      //   ),
-                      // ),
                     ),
                   ],
                 ),
               ),
             ),
-            title: const Text(
-              "File Name",
-            ),
             actions: [
               MaterialButton(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                color: const Color(0xff263238),
+                    borderRadius: BorderRadius.circular(20)),
+                color: const Color(0xff000000),
                 textColor: Colors.white,
                 child: const Text(
                   "CANCEL",
@@ -108,12 +134,12 @@ Future<void> fileNameDailog(
               ),
               MaterialButton(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(20)),
                 child: const Text(
                   "OK",
                 ),
                 textColor: Colors.white,
-                color: Color(0xFFFF0000),
+                color: Color(0xFFD50000),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     pdf = pw.Document();

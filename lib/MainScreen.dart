@@ -19,28 +19,31 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       drawer: drawerWidget(),
       appBar: MainScreenAppBarClass.getAppBar(),
-      body: Align(
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            mainOptions(
-              context,
-              "I WANT TO CONVERT",
-              Icons.cached_outlined,
-              "1",
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            mainOptions(
-              context,
-              "MY CONVERTED FILES",
-              Icons.folder,
-              "2",
-            ),
-          ],
-        )),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 60,
+          ),
+          child: Column(
+            children: [
+              mainOptions(
+                context,
+                "I want to CONVERT",
+                Icons.cached_outlined,
+                "1",
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              mainOptions(
+                context,
+                "My Converted Images",
+                Icons.folder,
+                "2",
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

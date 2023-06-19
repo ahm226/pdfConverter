@@ -42,13 +42,17 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       size: 25,
                     ),
                     label: const Text(
-                      "camera",
+                      "Camera",
                       style: TextStyle(fontSize: 20),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFFF0000),
-                      shadowColor: Color(0xFFFF5722),
-                      elevation: 20,
+                      padding: EdgeInsets.all(15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      backgroundColor: Color(0xFF0336ff),
+                      shadowColor: Color(0xFF0336ff),
+                      elevation: 10,
                     ),
                     onPressed: () async {
                       getImagesFromStorage("camera");
@@ -66,13 +70,17 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       size: 25,
                     ),
                     label: const Text(
-                      "gallery",
+                      "Storage",
                       style: TextStyle(fontSize: 20),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFFF0000),
-                      shadowColor: Color(0xFFFF5722),
-                      elevation: 20,
+                      padding: EdgeInsets.all(15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      backgroundColor: Color(0xFF0336ff),
+                      shadowColor: Color(0xFF0336ff),
+                      elevation: 10,
                     ),
                     onPressed: () {
                       getImagesFromStorage("gallery");
@@ -91,40 +99,37 @@ class _ConvertScreenState extends State<ConvertScreen> {
             const SizedBox(
               height: 16,
             ),
-            Card(
-              shadowColor: Color(0xFFFF0000),
-              elevation: 40,
-              color: Color(0xFFFF0000),
-              child: Container(
-                constraints: BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width * 0.2,
-                  minHeight: MediaQuery.of(context).size.height * 0.075,
-                ),
-                child: MaterialButton(
+            Container(
+              constraints: BoxConstraints(
+                minWidth: MediaQuery.of(context).size.width * 0.2,
+                minHeight: MediaQuery.of(context).size.height * 0.075,
+              ),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (files.isEmpty) {
+                    showMessage(
+                        "No image selected, kindly choose images", context);
+                  } else {
+                    fileNameDailog(context, files, status);
+                    setState(() {});
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.only(
+                      top: 10, bottom: 10, left: 25, right: 25),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  onPressed: () {
-                    if (files.isEmpty) {
-                      showMessage(
-                          "No image selected, kindly choose images", context);
-                    } else {
-                      fileNameDailog(context, files, status);
-                      setState(() {});
-                    }
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
-                    child: Text(
-                      "Convert",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                      ),
-                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  backgroundColor: const Color(0xFFD50000),
+                  shadowColor: const Color(0xFFD50000),
+                  elevation: 10,
+                ),
+                child: const Text(
+                  "Convert",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -161,13 +166,13 @@ class _ConvertScreenState extends State<ConvertScreen> {
           ],
           uiSettings: [
             AndroidUiSettings(
-                toolbarTitle: 'Cropper',
-                toolbarColor: Colors.deepOrange,
+                toolbarTitle: 'Crop Image',
+                toolbarColor: Color(0xFF0336ff),
                 toolbarWidgetColor: Colors.white,
                 initAspectRatio: CropAspectRatioPreset.original,
                 lockAspectRatio: false),
             IOSUiSettings(
-              title: 'Cropper',
+              title: 'Crop Image',
             ),
             WebUiSettings(
               context: context,

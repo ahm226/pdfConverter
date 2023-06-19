@@ -15,9 +15,9 @@ class MainScreenAppBarClass {
         builder: (context) {
           return IconButton(
             icon: const Icon(
-              Icons.apps,
+              Icons.menu,
               size: 30,
-              color: Color(0xFFFF5722),
+              color: Color(0xFFD50000),
             ),
             onPressed: () {
               Scaffold.of(context).openDrawer();
@@ -26,9 +26,9 @@ class MainScreenAppBarClass {
         },
       ),
       title: const Text(
-        "IMAGE TO PDF",
+        "Image to PDF",
         style: TextStyle(
-          color: Colors.black,
+          color: Color(0xFF000000),
           fontWeight: FontWeight.bold,
         ),
       ),
