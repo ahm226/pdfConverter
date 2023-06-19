@@ -6,15 +6,15 @@ class ConvertedScreenAppBarClass {
       backgroundColor: Colors.white,
       centerTitle: true,
       title: const Text(
-        "CONVERTED FILES",
+        "Converted Images",
         style: TextStyle(
-          color: Color(0xFFFF0000),
+          color: Color(0xFF000000),
           fontWeight: FontWeight.bold,
         ),
       ),
       elevation: 0,
       leading: const BackButton(
-        color: Color(0xFFFF0000),
+        color: Color(0xFF000000),
       ),
     );
   }

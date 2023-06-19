@@ -10,12 +10,14 @@ Widget mainOptions(
 ) {
   return Container(
     decoration: const BoxDecoration(
-      borderRadius: BorderRadius.all(
-        Radius.circular(90),
+      borderRadius: BorderRadius.only(
+        bottomRight: Radius.circular(110),
+        topLeft: Radius.circular(110),
       ),
     ),
-    margin: const EdgeInsets.all(
-      20,
+    margin: const EdgeInsets.only(
+      left: 30,
+      right: 30,
     ),
     constraints: BoxConstraints(
       minWidth: MediaQuery.of(context).size.width * 1,
@@ -40,36 +42,43 @@ Widget mainOptions(
           );
         }
       },
-      splashColor: Colors.black,
+      splashColor: Color(0xFFD50000),
       borderRadius: const BorderRadius.only(
-        bottomRight: Radius.circular(90),
-        topLeft: Radius.circular(90),
+        bottomRight: Radius.circular(110),
+        topLeft: Radius.circular(110),
+        bottomLeft: Radius.circular(110),
+        topRight: Radius.circular(110),
       ),
       child: Card(
-        shadowColor: Color(0xFFFF5722),
+        shadowColor: Color(0xFFD50000),
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(90),
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(110),
+            topLeft: Radius.circular(110),
+            bottomLeft: Radius.circular(110),
+            topRight: Radius.circular(110),
           ),
         ),
-        elevation: 50,
+        elevation: 20,
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color(0xFFFF0000),
-                Color(0xFFFF0000),
-                // Colors.orange,
+                Color(0xFFD50000),
+                Color(0xFFD50000),
                 // Color(0xFFE65100)
               ],
             ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(110),
+              topLeft: Radius.circular(110),
+              bottomLeft: Radius.circular(110),
+              topRight: Radius.circular(110),
             ),
           ),
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(40),
+              padding: const EdgeInsets.all(35),
               child: Column(
                 children: [
                   Icon(
@@ -83,7 +92,7 @@ Widget mainOptions(
                   Text(
                     title,
                     style: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 17,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),

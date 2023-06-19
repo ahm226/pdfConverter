@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:imagetopdfconverter/classes/convertedFilesScreenAppBar.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -63,115 +63,18 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                 padding: const EdgeInsets.only(top: 20),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                if (isList == true) {
-                                  isList = false;
-                                } else {
-                                  isList = true;
-                                }
-                              });
-                            },
-                            child: Icon(isList
-                                ? Icons.list_alt
-                                : Icons.grid_on_outlined),
-                          ),
-                        ],
-                      ),
-                    ),
                     SizedBox(
                       height: 550,
                       child: StatefulBuilder(
                         builder: ((context, setState) {
-                          return isList
-                              ? GridView.builder(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2),
-                                  itemCount: file.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () =>
-                                          viewConvertedFiles(file[index].path),
-                                      child: Card(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            const SizedBox(
-                                              width: 59,
-                                              height: 70,
-                                              child: Icon(
-                                                Icons.picture_as_pdf_sharp,
-                                                color: Colors.redAccent,
-                                                size: 60,
-                                              ),
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(file[index]
-                                                        .path
-                                                        .toString()
-                                                        .split("/")
-                                                        .last),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        IconButton(
-                                                          onPressed: () async {
-                                                            Share.shareFiles([
-                                                              '${file[index].path}'
-                                                            ],
-                                                                text: file[
-                                                                        index]
-                                                                    .path
-                                                                    .toString()
-                                                                    .split("/")
-                                                                    .last);
-                                                          },
-                                                          icon: const Icon(
-                                                            Icons.share,
-                                                          ),
-                                                          color: Colors.grey,
-                                                        ),
-                                                        IconButton(
-                                                          onPressed: () async {
-                                                            await deleteConvertedFileDailog(
-                                                                context,
-                                                                file[index]
-                                                                    .path,
-                                                                index);
-                                                          },
-                                                          icon: const Icon(
-                                                            Icons.delete,
-                                                          ),
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
+                          return file.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                    "No Converted File Available",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
                                 )
                               : ListView.builder(
                                   shrinkWrap: true,
@@ -181,9 +84,12 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 0.0, horizontal: 5.0),
                                       child: InkWell(
-                                        onTap: () => viewConvertedFiles(
-                                            file[index].path),
+                                        onTap: () {
+                                          print(file[index].path);
+                                          viewConvertedFiles(file[index].path);
+                                        },
                                         child: Card(
+                                          elevation: 15,
                                           shadowColor: Colors.white54,
                                           child: ClipRRect(
                                             borderRadius:
@@ -198,8 +104,8 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                                     height: 70,
                                                     child: Icon(
                                                       Icons
-                                                          .picture_as_pdf_sharp,
-                                                      color: Colors.redAccent,
+                                                          .picture_as_pdf_rounded,
+                                                      color: Color(0xFFFF0000),
                                                       size: 45,
                                                     ),
                                                   ),
@@ -235,7 +141,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                                     icon: const Icon(
                                                       Icons.share,
                                                     ),
-                                                    color: Colors.grey,
+                                                    color: Color(0xFF304FFE),
                                                   ),
                                                   IconButton(
                                                     onPressed: () async {
@@ -247,7 +153,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                                     icon: const Icon(
                                                       Icons.delete,
                                                     ),
-                                                    color: Colors.grey,
+                                                    color: Color(0xFFD50000),
                                                   ),
                                                 ],
                                               ),
@@ -276,21 +182,22 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
       builder: (context) {
         return AlertDialog(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: const Text(
-            "Do you really want to delete this file?",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            "Do you want to delete this file?",
           ),
           content: Text(
             path.toString().split("/").last,
-            style: const TextStyle(color: Colors.redAccent),
+            style: const TextStyle(
+              color: Color(0xFFD50000),
+            ),
           ),
           actions: [
             MaterialButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              color: const Color(0xff263238),
+              color: const Color(0xff000000),
               textColor: Colors.white,
               onPressed: () {
                 Navigator.of(context).pop();
