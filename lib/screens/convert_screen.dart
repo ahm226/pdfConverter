@@ -1,10 +1,14 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:imagetopdfconverter/classes/ConvertScreenAppBar.dart';
 import 'package:imagetopdfconverter/screens/Converting.dart';
-import 'package:imagetopdfconverter/screens/ImagesList.dart';
+import 'package:open_file_plus/open_file_plus.dart';
 
+import '../classes/Helper.dart';
 import '../widgets/message_widget.dart';
 
 class ConvertScreen extends StatefulWidget {
@@ -21,6 +25,19 @@ class _ConvertScreenState extends State<ConvertScreen> {
   bool status = false;
   final picker = ImagePicker();
   late final imagesPathCropped;
+  static String formatBytes(int bytes, int decimals) {
+    if (bytes <= 0) return "0 B";
+    const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    var i = (log(bytes) / log(1024)).floor();
+    return ((bytes / pow(1024, i)).toStringAsFixed(decimals)) +
+        ' ' +
+        suffixes[i];
+  }
+
+  void viewFile(dynamic file) {
+    OpenFile.open(file.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,9 +109,105 @@ class _ConvertScreenState extends State<ConvertScreen> {
             const SizedBox(
               height: 15,
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.60,
-              child: ImagesList(files: files),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(limit.value.toString() + "/100"),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.60,
+                child:
+                    //ImagesList(files: files),
+                    files.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: files.length,
+                            itemBuilder: (context, index) {
+                              final file = files[index];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 0.0, horizontal: 5.0),
+                                child: InkWell(
+                                  onTap: () => viewFile(file),
+                                  child: Card(
+                                    shadowColor: Colors.white60,
+                                    elevation: 15,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: Container(
+                                        height: 70,
+                                        color: Colors.white,
+                                        child: Row(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width: 59,
+                                              height: 70,
+                                              child: Image.file(
+                                                File(file.path.toString()),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                    file.path.split("/").last,
+                                                    maxLines: 1,
+                                                    style: const TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                  ),
+
+                                                  // Text(formatBytes(filelength, 1)),
+                                                  Text(file.path
+                                                      .toString()
+                                                      .split(".")
+                                                      .last),
+                                                  //Text('${file.extension}'),
+                                                ],
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  limit.value--;
+                                                  files.remove(file);
+                                                });
+                                              },
+                                              icon: const Icon(
+                                                Icons.cancel,
+                                              ),
+                                              color: const Color(0xFFD50000),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: Text(
+                              "No image selected",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+              ),
             ),
             const SizedBox(
               height: 16,
@@ -144,11 +257,25 @@ class _ConvertScreenState extends State<ConvertScreen> {
     if (inputSource == 'gallery') {
       selectedImages = await picker.pickMultiImage();
       if (files.isNotEmpty) {
-        // files.addAll(duplicates.map((e) => File(e!)).toList());
-        files.addAll(selectedImages as Iterable);
+        limit.value < 5
+            ? {
+                files.addAll(selectedImages as Iterable),
+                setState(() {
+                  limit.value = limit.value +
+                      int.parse(selectedImages!.length.toString());
+                })
+              }
+            : showMessage("limit exceeded", context);
       } else {
-        // files.add(result.path.map((e) => File(e!)).toList());
-        files.addAll(selectedImages as Iterable);
+        limit.value < 5
+            ? {
+                files.addAll(selectedImages as Iterable),
+                setState(() {
+                  limit.value = limit.value +
+                      int.parse(selectedImages!.length.toString());
+                })
+              }
+            : showMessage("limit exceeded", context);
       }
     }
     if (inputSource != 'gallery') {
@@ -181,10 +308,25 @@ class _ConvertScreenState extends State<ConvertScreen> {
         );
         if (files.isNotEmpty) {
           // files.addAll(duplicates.map((e) => File(e!)).toList());
-          files.add(croppedFile!);
+
+          limit.value < 5
+              ? {
+                  files.add(croppedFile!),
+                  setState(() {
+                    limit.value++;
+                  })
+                }
+              : showMessage("limit exceeded", context);
         } else {
           // files.add(result.path.map((e) => File(e!)).toList());
-          files.add(croppedFile!);
+          limit.value < 5
+              ? {
+                  files.add(croppedFile!),
+                  setState(() {
+                    limit.value++;
+                  })
+                }
+              : showMessage("limit exceeded", context);
         }
       }
     }
