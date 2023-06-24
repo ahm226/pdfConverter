@@ -2,7 +2,7 @@ import 'dart:io' as io;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:imagetopdfconverter/classes/convertedFilesScreenAppBar.dart';
+import 'package:imagetopdfconverter/classes/ConvertedFilesScreenAppBar.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -70,7 +70,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                           return file.isEmpty
                               ? const Center(
                                   child: Text(
-                                    "No Converted File Available",
+                                    "No Converted Files Available",
                                     style: TextStyle(
                                       fontSize: 18,
                                     ),
@@ -141,7 +141,8 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                                     icon: const Icon(
                                                       Icons.share,
                                                     ),
-                                                    color: Color(0xFF304FFE),
+                                                    color: Color.fromARGB(
+                                                        255, 49, 89, 245),
                                                   ),
                                                   IconButton(
                                                     onPressed: () async {
@@ -195,7 +196,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
           actions: [
             MaterialButton(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
               ),
               color: const Color(0xff000000),
               textColor: Colors.white,
@@ -206,10 +207,10 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
             ),
             MaterialButton(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
               ),
               textColor: Colors.white,
-              color: const Color(0xff0336ff),
+              color: const Color.fromARGB(255, 226, 51, 51),
               onPressed: () async {
                 setState(() {
                   file.removeAt(index);

@@ -37,6 +37,7 @@ dependencies:
   file_picker:
   open_file_plus: ^3.4.1
   get: ^4.6.5
+  flutter_image_compress: ^2.0.3
   path_provider: 
   pdf:
   image_picker:
