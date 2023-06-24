@@ -6,10 +6,12 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:imagetopdfconverter/classes/ConvertScreenAppBar.dart';
 import 'package:imagetopdfconverter/screens/Converting.dart';
+import 'package:imagetopdfconverter/widgets/message_widget_error.dart';
+import 'package:imagetopdfconverter/widgets/message_widget_infromation.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 
 import '../classes/Helper.dart';
-import '../widgets/message_widget.dart';
+import '../widgets/message_widget_success.dart';
 
 class ConvertScreen extends StatefulWidget {
   const ConvertScreen({Key? key}) : super(key: key);
@@ -56,19 +58,18 @@ class _ConvertScreenState extends State<ConvertScreen> {
                   child: ElevatedButton.icon(
                     icon: const Icon(
                       Icons.camera_alt,
-                      size: 25,
+                      size: 22,
                     ),
                     label: const Text(
                       "Camera",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 18),
                     ),
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      backgroundColor: Color(0xFF0336ff),
-                      shadowColor: Color(0xFF0336ff),
+                      backgroundColor: Color.fromARGB(255, 49, 89, 245),
+                      shadowColor: Colors.white38,
                       elevation: 10,
                     ),
                     onPressed: () async {
@@ -84,19 +85,18 @@ class _ConvertScreenState extends State<ConvertScreen> {
                   child: ElevatedButton.icon(
                     icon: const Icon(
                       Icons.sd_storage_sharp,
-                      size: 25,
+                      size: 22,
                     ),
                     label: const Text(
                       "Storage",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 18),
                     ),
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      backgroundColor: Color(0xFF0336ff),
-                      shadowColor: Color(0xFF0336ff),
+                      backgroundColor: Color.fromARGB(255, 49, 89, 245),
+                      shadowColor: Colors.white38,
                       elevation: 10,
                     ),
                     onPressed: () {
@@ -137,7 +137,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                                   onTap: () => viewFile(file),
                                   child: Card(
                                     shadowColor: Colors.white60,
-                                    elevation: 15,
+                                    elevation: 10,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
                                       child: Container(
@@ -220,20 +220,20 @@ class _ConvertScreenState extends State<ConvertScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   if (files.isEmpty) {
-                    showMessage(
-                        "No image selected, kindly choose images", context);
+                    showMessageForError(
+                      "No image selected, kindly choose images",
+                      context,
+                    );
                   } else {
                     fileNameDailog(context, files, status);
                     setState(() {});
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.only(
-                      top: 10, bottom: 10, left: 25, right: 25),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  backgroundColor: const Color(0xFFD50000),
+                  backgroundColor: const Color.fromARGB(255, 226, 51, 51),
                   shadowColor: const Color(0xFFD50000),
                   elevation: 10,
                 ),
@@ -241,7 +241,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                   "Convert",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 22,
                     color: Colors.white,
                   ),
                 ),
@@ -265,7 +265,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       int.parse(selectedImages!.length.toString());
                 })
               }
-            : showMessage("limit exceeded", context);
+            : showMessageForInformation("limit exceeded", context);
       } else {
         limit.value < 5
             ? {
@@ -275,7 +275,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       int.parse(selectedImages!.length.toString());
                 })
               }
-            : showMessage("limit exceeded", context);
+            : showMessageForInformation("limit exceeded", context);
       }
     }
     if (inputSource != 'gallery') {
@@ -316,7 +316,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                     limit.value++;
                   })
                 }
-              : showMessage("limit exceeded", context);
+              : showMessageForInformation("limit exceeded", context);
         } else {
           // files.add(result.path.map((e) => File(e!)).toList());
           limit.value < 5
@@ -326,7 +326,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                     limit.value++;
                   })
                 }
-              : showMessage("limit exceeded", context);
+              : showMessageForInformation("limit exceeded", context);
         }
       }
     }

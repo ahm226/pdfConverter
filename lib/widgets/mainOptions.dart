@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:imagetopdfconverter/screens/CompressedImagesScreen.dart';
+import 'package:imagetopdfconverter/screens/CompressingImagesScreen.dart';
 import 'package:imagetopdfconverter/screens/convert_screen.dart';
 import 'package:imagetopdfconverter/screens/converted_files_screen.dart';
 
-Widget mainOptions(
+Widget mainOptionsTop(
   BuildContext context,
-  String title,
-  IconData icon,
+  String title1,
+  String title2,
+  IconData icon1,
+  IconData icon2,
+  IconData icon3,
   String cardId,
 ) {
-  return Container(
-    decoration: const BoxDecoration(
-      borderRadius: BorderRadius.only(
-        bottomRight: Radius.circular(110),
-        topLeft: Radius.circular(110),
-      ),
-    ),
-    margin: const EdgeInsets.only(
-      left: 30,
-      right: 30,
-    ),
-    constraints: BoxConstraints(
-      minWidth: MediaQuery.of(context).size.width * 1,
-      minHeight: MediaQuery.of(context).size.height * 0.20,
-      maxHeight: MediaQuery.of(context).size.height * 0.60,
-    ),
-
-    // margin: const EdgeInsets.only(left: 20, right: 20),
+  return Card(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    elevation: 10,
+    shadowColor: Colors.white60,
+    color: Colors.white,
     child: InkWell(
+      borderRadius: BorderRadius.circular(20),
+      splashColor: Colors.transparent,
       onTap: () {
         if (cardId == "1") {
           Navigator.of(context).push(
@@ -37,72 +31,96 @@ Widget mainOptions(
         } else if (cardId == "2") {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const ConvertedFilesScreen(),
+              builder: (context) => const CompressImagesScreen(),
             ),
           );
         }
       },
-      splashColor: Color(0xFFD50000),
-      borderRadius: const BorderRadius.only(
-        bottomRight: Radius.circular(110),
-        topLeft: Radius.circular(110),
-        bottomLeft: Radius.circular(110),
-        topRight: Radius.circular(110),
-      ),
-      child: Card(
-        shadowColor: Color(0xFFD50000),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(110),
-            topLeft: Radius.circular(110),
-            bottomLeft: Radius.circular(110),
-            topRight: Radius.circular(110),
-          ),
-        ),
-        elevation: 20,
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFFD50000),
-                Color(0xFFD50000),
-                // Color(0xFFE65100)
-              ],
-            ),
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(110),
-              topLeft: Radius.circular(110),
-              bottomLeft: Radius.circular(110),
-              topRight: Radius.circular(110),
-            ),
-          ),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(35),
-              child: Column(
+      child: Container(
+        height: 110,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    icon,
-                    color: Colors.white,
-                    size: 60,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    child: Icon(
+                      icon1,
+                      size: 50,
+                      color: Color(0xFF0336ff),
                     ),
                   ),
+                  Text(
+                    title1,
+                    style: TextStyle(color: Color(0xFF0336ff)),
+                  )
                 ],
               ),
-            ),
+              Icon(
+                icon2,
+                size: 30,
+                color: Colors.black,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    child: Icon(
+                      icon3,
+                      size: 50,
+                      color: Color(0xFFD50000),
+                    ),
+                  ),
+                  Text(
+                    title2,
+                    style: TextStyle(color: Color(0xFFD50000)),
+                  )
+                ],
+              )
+            ],
           ),
         ),
       ),
     ),
+  );
+}
+
+Widget mainOptionsBottom(
+  BuildContext context,
+  String title,
+  IconData icon,
+  String cardId,
+) {
+  return Column(
+    children: [
+      InkWell(
+        splashColor: Colors.transparent,
+        onTap: () {
+          if (cardId == "3") {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const ConvertedFilesScreen(),
+              ),
+            );
+          } else if (cardId == "4") {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CompressedImages(),
+              ),
+            );
+          }
+        },
+        child: Icon(
+          icon,
+          color: Colors.amber,
+          size: 60,
+        ),
+      ),
+      Text(title)
+    ],
   );
 }

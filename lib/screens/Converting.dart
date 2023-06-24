@@ -6,7 +6,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 
-import '../widgets/message_widget.dart';
+import '../widgets/message_widget_success.dart';
 
 var pdf = pw.Document();
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -31,90 +31,95 @@ Future<void> fileNameDailog(
               child: Container(
                 height: 160,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   // mainAxisSize: MainAxisSize.max,
                   children: [
                     SizedBox(
-                      width: 250,
                       child: TextFormField(
                         controller: _userfilename,
                         validator: (val) =>
                             val!.isEmpty ? "enter a valid name" : null,
                         decoration: InputDecoration(
-                          hintText: 'File Name',
-                          labelText: 'File Name',
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1.2,
-                              fontSize: 12,
-                              color: Colors.black.withOpacity(0.4)),
-                          labelStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1.2,
-                              fontSize: 12,
-                              color: Colors.black.withOpacity(0.4)),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.grey.withOpacity(0.2),
-                                width: 1.5),
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.grey.withOpacity(0.2),
-                                width: 1.5),
-                            borderRadius: BorderRadius.circular(7),
+                          label: Text(
+                            "File name",
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                           errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide(
-                                color: Colors.red.withOpacity(0.8), width: 1.5),
-                            borderRadius: BorderRadius.circular(7),
+                              width: 1,
+                              color: Color(0xFFD50000),
+                            ), //<-- SEE HERE
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: Colors.grey,
+                            ), //<-- SEE HERE
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: Colors.grey,
+                            ), //<-- SEE HERE
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: Colors.grey,
+                            ), //<-- SEE HERE
                           ),
                         ),
                       ),
                     ),
-                    // Container(
-                    //   width: 250,
-                    //   child: TextFormField(
-                    //     controller: _userfilename,
-                    //     validator: (value) {
-                    //       return value!.isNotEmpty
-                    //           ? null
-                    //           : "File name can't be empty";
-                    //     },
-                    //     decoration: const InputDecoration(
-                    //       border: UnderlineInputBorder(),
-                    //       hintText: "Enter the file Name",
-                    //     ),
-                    //   ),
-                    // ),
-                    Container(
-                      width: 250,
-                      child: DropdownButton(
-                        hint: _dropDownValue == null
-                            ? const Text('A4')
-                            : Text(
-                                _dropDownValue,
-                              ),
-                        isExpanded: true,
-                        iconSize: 30.0,
-                        items: ['A3', 'A4', 'A5', 'A6'].map(
-                          (val) {
-                            return DropdownMenuItem<String>(
-                              value: val,
-                              child: Text(val),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (val) {
-                          setState(
-                            () {
-                              _dropDownValue = (val as String?)!;
-                            },
-                          );
-                        },
-                      ),
+                    const SizedBox(
+                      height: 20,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Page size",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Container(
+                          width: 100,
+                          child: DropdownButton(
+                            hint: _dropDownValue == null
+                                ? const Text('A4')
+                                : Text(
+                                    _dropDownValue,
+                                  ),
+                            isExpanded: true,
+                            iconSize: 30.0,
+                            items: ['A3', 'A4', 'A5', 'A6'].map(
+                              (val) {
+                                return DropdownMenuItem<String>(
+                                  value: val,
+                                  child: Text(val),
+                                );
+                              },
+                            ).toList(),
+                            onChanged: (val) {
+                              setState(
+                                () {
+                                  _dropDownValue = (val as String?)!;
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -139,7 +144,7 @@ Future<void> fileNameDailog(
                   "OK",
                 ),
                 textColor: Colors.white,
-                color: Color(0xFFD50000),
+                color: Color.fromARGB(255, 226, 51, 51),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     pdf = pw.Document();
@@ -150,7 +155,10 @@ Future<void> fileNameDailog(
                     _userfilename.clear();
 
                     Navigator.of(context).pop();
-                    showMessage("File converted Successfully ", context);
+                    showMessageForSuccess(
+                      "File converted Successfully ",
+                      context,
+                    );
                     //   MaterialPageRoute(
                     //     builder: (context) => const ConvertedFilesScreen(),
                     //   ),

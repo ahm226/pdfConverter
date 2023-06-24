@@ -19,29 +19,62 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       drawer: drawerWidget(),
       appBar: MainScreenAppBarClass.getAppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 60,
-          ),
-          child: Column(
-            children: [
-              mainOptions(
-                context,
-                "I want to CONVERT",
-                Icons.cached_outlined,
-                "1",
+      body: Center(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+                right: 50,
+                left: 50,
               ),
-              const SizedBox(
-                height: 30,
+              child: Column(
+                children: [
+                  mainOptionsTop(
+                    context,
+                    "Image",
+                    "PDF",
+                    Icons.image,
+                    Icons.keyboard_arrow_right_rounded,
+                    Icons.picture_as_pdf,
+                    "1",
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  mainOptionsTop(
+                    context,
+                    "Image",
+                    "Compress",
+                    Icons.image,
+                    Icons.keyboard_arrow_right_rounded,
+                    Icons.compress_rounded,
+                    "2",
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      mainOptionsBottom(
+                        context,
+                        "PDF Images",
+                        Icons.folder,
+                        "3",
+                      ),
+                      mainOptionsBottom(
+                        context,
+                        "Compress Images",
+                        Icons.folder,
+                        "4",
+                      )
+                    ],
+                  )
+                ],
               ),
-              mainOptions(
-                context,
-                "My Converted Images",
-                Icons.folder,
-                "2",
-              ),
-            ],
+            ),
           ),
         ),
       ),
