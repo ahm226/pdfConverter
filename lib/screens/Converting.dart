@@ -7,6 +7,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 
 import '../widgets/message_widget_success.dart';
+import 'converted_files_screen.dart';
 
 var pdf = pw.Document();
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -149,20 +150,21 @@ Future<void> fileNameDailog(
                   if (_formKey.currentState!.validate()) {
                     pdf = pw.Document();
                     createPDF(files);
-                    savePDF(_userfilename.text, files);
+                    await savePDF(_userfilename.text, files);
 
                     Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ConvertedFilesScreen(),
+                      ),
+                    );
                     _userfilename.clear();
 
-                    Navigator.of(context).pop();
+                    //Navigator.of(context).pop();
                     showMessageForSuccess(
                       "File converted Successfully ",
                       context,
                     );
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const ConvertedFilesScreen(),
-                    //   ),
-                    // );
                   }
                 },
               ),
@@ -209,8 +211,6 @@ savePDF(String userfilename, List<dynamic> files) async {
   try {
     final file = File('$filePath/$userfilename.pdf');
     await file.writeAsBytes(await pdf.save());
-    removeConvertfiles(files);
-    // showMessage('Successfully Converted', BuildContext);
   } catch (e) {
     // showMessage('error', e.toString());
   }

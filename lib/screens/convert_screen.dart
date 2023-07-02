@@ -11,7 +11,6 @@ import 'package:imagetopdfconverter/widgets/message_widget_infromation.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 
 import '../classes/Helper.dart';
-import '../widgets/message_widget_success.dart';
 
 class ConvertScreen extends StatefulWidget {
   const ConvertScreen({Key? key}) : super(key: key);
@@ -21,7 +20,6 @@ class ConvertScreen extends StatefulWidget {
 }
 
 class _ConvertScreenState extends State<ConvertScreen> {
-  List<dynamic> files = [];
   List<dynamic>? selectedImages = [];
   bool isLoading = false;
   bool status = false;
@@ -114,7 +112,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(limit.value.toString() + "/100"),
+                  Text(pdfImagelimit.value.toString() + "/100"),
                 ],
               ),
             ),
@@ -181,7 +179,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                                             IconButton(
                                               onPressed: () {
                                                 setState(() {
-                                                  limit.value--;
+                                                  pdfImagelimit.value--;
                                                   files.remove(file);
                                                 });
                                               },
@@ -257,21 +255,21 @@ class _ConvertScreenState extends State<ConvertScreen> {
     if (inputSource == 'gallery') {
       selectedImages = await picker.pickMultiImage();
       if (files.isNotEmpty) {
-        limit.value < 5
+        pdfImagelimit.value < 100
             ? {
                 files.addAll(selectedImages as Iterable),
                 setState(() {
-                  limit.value = limit.value +
+                  pdfImagelimit.value = pdfImagelimit.value +
                       int.parse(selectedImages!.length.toString());
                 })
               }
             : showMessageForInformation("limit exceeded", context);
       } else {
-        limit.value < 5
+        pdfImagelimit.value < 100
             ? {
                 files.addAll(selectedImages as Iterable),
                 setState(() {
-                  limit.value = limit.value +
+                  pdfImagelimit.value = pdfImagelimit.value +
                       int.parse(selectedImages!.length.toString());
                 })
               }
@@ -309,21 +307,21 @@ class _ConvertScreenState extends State<ConvertScreen> {
         if (files.isNotEmpty) {
           // files.addAll(duplicates.map((e) => File(e!)).toList());
 
-          limit.value < 5
+          pdfImagelimit.value < 100
               ? {
                   files.add(croppedFile!),
                   setState(() {
-                    limit.value++;
+                    pdfImagelimit.value++;
                   })
                 }
               : showMessageForInformation("limit exceeded", context);
         } else {
           // files.add(result.path.map((e) => File(e!)).toList());
-          limit.value < 5
+          pdfImagelimit.value < 100
               ? {
                   files.add(croppedFile!),
                   setState(() {
-                    limit.value++;
+                    pdfImagelimit.value++;
                   })
                 }
               : showMessageForInformation("limit exceeded", context);

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:imagetopdfconverter/screens/CompressedImagesScreen.dart';
 import 'package:imagetopdfconverter/screens/CompressingImagesScreen.dart';
 import 'package:imagetopdfconverter/screens/convert_screen.dart';
 import 'package:imagetopdfconverter/screens/converted_files_screen.dart';
+
+import '../screens/compressedImageDownloaded.dart';
 
 Widget mainOptionsTop(
   BuildContext context,
@@ -109,7 +110,7 @@ Widget mainOptionsBottom(
           } else if (cardId == "4") {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const CompressedImages(),
+                builder: (context) => const CompressedDownloaded(),
               ),
             );
           }

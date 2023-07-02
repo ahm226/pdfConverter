@@ -1,3 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
-final limit = ValueNotifier(0);
+final pdfImagelimit = ValueNotifier(0);
+final compressImagelimit = ValueNotifier(0);
+final RxList compressedFiles = [].obs;
+List<dynamic> files = [];
