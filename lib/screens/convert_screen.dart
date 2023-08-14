@@ -2,9 +2,10 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:imagetopdfconverter/classes/ConvertScreenAppBar.dart';
 import 'package:imagetopdfconverter/widgets/message_widget_error.dart';
 import 'package:imagetopdfconverter/widgets/message_widget_infromation.dart';
 import 'package:open_file_plus/open_file_plus.dart';
@@ -14,7 +15,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 
 import '../classes/Helper.dart';
-import '../widgets/message_widget_success.dart';
 import 'converted_files_screen.dart';
 
 class ConvertScreen extends StatefulWidget {
@@ -36,6 +36,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
   bool status = false;
   final picker = ImagePicker();
   late final imagesPathCropped;
+
   static String formatBytes(int bytes, int decimals) {
     if (bytes <= 0) return "0 B";
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
@@ -50,70 +51,105 @@ class _ConvertScreenState extends State<ConvertScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pdfImagelimit.value = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ConvertScreenAppBarClass.getAppBar(),
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Choose Images",
+          // style: GoogleFonts.dmSans(
+          //   color: Colors.black,
+          //   fontWeight: FontWeight.bold,
+          // ),
+        ),
+        elevation: 0,
+        leading: const BackButton(
+          color: Color(0xFF000000),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width * 0.2,
-                    minHeight: MediaQuery.of(context).size.height * 0.075,
-                  ),
-                  child: ElevatedButton.icon(
-                    icon: const Icon(
-                      Icons.camera_alt,
-                      size: 22,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width * 0.4,
+                      minHeight: MediaQuery.of(context).size.height * 0.075,
                     ),
-                    label: const Text(
-                      "Camera",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                    child: ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.camera_alt,
+                        size: 22,
                       ),
-                      backgroundColor: Color.fromARGB(255, 49, 89, 245),
-                      shadowColor: Colors.white38,
-                      elevation: 10,
-                    ),
-                    onPressed: () async {
-                      getImagesFromStorage("camera");
-                    },
-                  ),
-                ),
-                Container(
-                  constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width * 0.2,
-                    minHeight: MediaQuery.of(context).size.height * 0.075,
-                  ),
-                  child: ElevatedButton.icon(
-                    icon: const Icon(
-                      Icons.sd_storage_sharp,
-                      size: 22,
-                    ),
-                    label: const Text(
-                      "Storage",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                      label: Text(
+                        "Camera",
+                        // style: GoogleFonts.dmSans(
+                        //   color: Colors.white,
+                        //   fontSize: 18,
+                        // ),
                       ),
-                      backgroundColor: Color.fromARGB(255, 49, 89, 245),
-                      shadowColor: Colors.white38,
-                      elevation: 10,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        backgroundColor: Color(0xff1C2978),
+                        shadowColor: Colors.white38,
+                        elevation: 10,
+                      ),
+                      onPressed: () async {
+                        getImagesFromStorage("camera");
+                      },
                     ),
-                    onPressed: () {
-                      getImagesFromStorage("gallery");
-                    },
                   ),
-                ),
-              ],
+                  Container(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width * 0.4,
+                      minHeight: MediaQuery.of(context).size.height * 0.075,
+                    ),
+                    child: ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.sd_storage_sharp,
+                        size: 22,
+                      ),
+                      label: Text(
+                        "Storage",
+                        // style: GoogleFonts.dmSans(
+                        //   color: Colors.white,
+                        //   fontSize: 18,
+                        // ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        backgroundColor: Color(0xff1C2978),
+                        shadowColor: Colors.white38,
+                        elevation: 10,
+                      ),
+                      onPressed: () {
+                        getImagesFromStorage("gallery");
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 15,
@@ -123,7 +159,12 @@ class _ConvertScreenState extends State<ConvertScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(pdfImagelimit.value.toString() + "/100"),
+                  Text(
+                    pdfImagelimit.value.toString() + "/100",
+                    // style: GoogleFonts.dmSans(
+                    //   color: Colors.black,
+                    // ),
+                  ),
                 ],
               ),
             ),
@@ -145,8 +186,9 @@ class _ConvertScreenState extends State<ConvertScreen> {
                                 child: InkWell(
                                   onTap: () => viewFile(file),
                                   child: Card(
+                                    shape: Border.all(color: Colors.white70),
                                     shadowColor: Colors.white60,
-                                    elevation: 10,
+                                    elevation: 8,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
                                       child: Container(
@@ -173,17 +215,21 @@ class _ConvertScreenState extends State<ConvertScreen> {
                                                   Text(
                                                     file.path.split("/").last,
                                                     maxLines: 1,
-                                                    style: const TextStyle(
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
+                                                    // style: GoogleFonts.dmSans(
+                                                    //     color: Colors.black,
+                                                    //     fontWeight:
+                                                    //         FontWeight.w500),
                                                   ),
-
-                                                  // Text(formatBytes(filelength, 1)),
-                                                  Text(file.path
-                                                      .toString()
-                                                      .split(".")
-                                                      .last),
-                                                  //Text('${file.extension}'),
+                                                  Text(
+                                                    file.path
+                                                        .toString()
+                                                        .split(".")
+                                                        .last,
+                                                    // style: GoogleFonts.dmSans(
+                                                    //     color: Colors.grey,
+                                                    //     fontWeight:
+                                                    //         FontWeight.w500),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -196,8 +242,8 @@ class _ConvertScreenState extends State<ConvertScreen> {
                                               },
                                               icon: const Icon(
                                                 Icons.cancel,
+                                                color: const Color(0xFFD50000),
                                               ),
-                                              color: const Color(0xFFD50000),
                                             ),
                                           ],
                                         ),
@@ -208,12 +254,13 @@ class _ConvertScreenState extends State<ConvertScreen> {
                               );
                             },
                           )
-                        : const Center(
+                        : Center(
                             child: Text(
                               "No image selected",
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
+                              // style: GoogleFonts.dmSans(
+                              //   color: Colors.black,
+                              //   fontSize: 18,
+                              // ),
                             ),
                           ),
               ),
@@ -223,8 +270,8 @@ class _ConvertScreenState extends State<ConvertScreen> {
             ),
             Container(
               constraints: BoxConstraints(
-                minWidth: MediaQuery.of(context).size.width * 0.2,
-                minHeight: MediaQuery.of(context).size.height * 0.075,
+                minWidth: MediaQuery.of(context).size.width * 0.5,
+                minHeight: MediaQuery.of(context).size.height * 0.065,
               ),
               child: ElevatedButton(
                 onPressed: () {
@@ -244,19 +291,19 @@ class _ConvertScreenState extends State<ConvertScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   backgroundColor: const Color.fromARGB(255, 226, 51, 51),
                   shadowColor: const Color(0xFFD50000),
-                  elevation: 10,
                 ),
-                child: const Text(
+                child: Text(
                   "Convert",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                  ),
+                  // style: GoogleFonts.dmSans(
+                  //   color: Colors.white,
+                  //   fontWeight: FontWeight.w500,
+                  //   fontSize: 22,
+                  // ),
                 ),
               ),
             )
@@ -357,7 +404,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
           builder: (context, setState) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(12)),
               elevation: 30,
               content: Form(
                 key: _formKey,
@@ -372,35 +419,35 @@ class _ConvertScreenState extends State<ConvertScreen> {
                           validator: (val) =>
                               val!.isEmpty ? "enter a valid name" : null,
                           decoration: InputDecoration(
-                            label: const Text(
+                            label: Text(
                               "File name",
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
+                              // style: GoogleFonts.dmSans(
+                              //   color: Colors.black,
+                              // ),
                             ),
                             errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(12),
                               borderSide: const BorderSide(
                                 width: 1,
                                 color: Color(0xFFD50000),
                               ), //<-- SEE HERE
                             ),
                             focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(12),
                               borderSide: const BorderSide(
                                 width: 1,
                                 color: Colors.grey,
                               ), //<-- SEE HERE
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(12),
                               borderSide: const BorderSide(
                                 width: 1,
                                 color: Colors.grey,
                               ), //<-- SEE HERE
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(12),
                               borderSide: const BorderSide(
                                 width: 1,
                                 color: Colors.grey,
@@ -415,13 +462,13 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             "Page size",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.grey,
-                            ),
+                            // style: GoogleFonts.dmSans(
+                            //   fontWeight: FontWeight.bold,
+                            //   fontSize: 15,
+                            //   color: Colors.black,
+                            // ),
                           ),
                           Container(
                             width: 100,
@@ -459,11 +506,12 @@ class _ConvertScreenState extends State<ConvertScreen> {
               actions: [
                 MaterialButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  color: const Color(0xff000000),
+                      borderRadius: BorderRadius.circular(12)),
+                  color: const Color.fromARGB(255, 226, 51, 51),
                   textColor: Colors.white,
-                  child: const Text(
-                    "CANCEL",
+                  child: Text(
+                    "Cancel",
+                    // style: GoogleFonts.dmSans(),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -471,12 +519,14 @@ class _ConvertScreenState extends State<ConvertScreen> {
                 ),
                 MaterialButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: const Text(
-                    "OK",
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Text(
+                    "Done",
+                    // style:
+                    // GoogleFonts.dmSans()
                   ),
                   textColor: Colors.white,
-                  color: Color.fromARGB(255, 226, 51, 51),
+                  color: Color(0xFF1C2978),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       pdf = pw.Document();
@@ -490,10 +540,11 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         ),
                       );
                       _userfilename.clear();
-                      showMessageForSuccess(
-                        "File converted Successfully ",
-                        context,
-                      );
+                      files.clear();
+                      // showMessageForSuccess(
+                      //   "File converted Successfully ",
+                      //   context,
+                      // );
                     }
                   },
                 ),
