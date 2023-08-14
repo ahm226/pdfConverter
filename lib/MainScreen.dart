@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:imagetopdfconverter/classes/MainScreenAppBar.dart';
 import 'package:imagetopdfconverter/widgets/drawer_widget.dart';
 import 'package:imagetopdfconverter/widgets/mainOptions.dart';
@@ -17,27 +18,30 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       drawer: drawerWidget(),
       appBar: MainScreenAppBarClass.getAppBar(),
-      body: Center(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 30,
-                right: 50,
-                left: 50,
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.5,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/background.png"),
+                fit: BoxFit.fill,
               ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(top: 110),
               child: Column(
                 children: [
                   mainOptionsTop(
                     context,
-                    "Image",
-                    "PDF",
-                    Icons.image,
-                    Icons.keyboard_arrow_right_rounded,
-                    Icons.picture_as_pdf,
+                    "Convert Image to PDF",
+                    "Use Now",
+                    const AssetImage("assets/gallery.png"),
+                    const AssetImage("assets/pdficon.png"),
                     "1",
                   ),
                   const SizedBox(
@@ -45,38 +49,40 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   mainOptionsTop(
                     context,
-                    "Image",
-                    "Compress",
-                    Icons.image,
-                    Icons.keyboard_arrow_right_rounded,
-                    Icons.compress_rounded,
+                    "Compress Images",
+                    "Use Now",
+                    const AssetImage("assets/gallery.png"),
+                    const AssetImage("assets/compressicon.png"),
                     "2",
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      mainOptionsBottom(
-                        context,
-                        "PDF Images",
-                        Icons.folder,
-                        "3",
-                      ),
-                      mainOptionsBottom(
-                        context,
-                        "Compress Images",
-                        Icons.folder,
-                        "4",
-                      )
-                    ],
-                  )
                 ],
               ),
             ),
           ),
-        ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              mainOptionsBottom(
+                context,
+                "PDF Images",
+                const AssetImage("assets/pdfcompletedicon.png"),
+                "3",
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              mainOptionsBottom(
+                context,
+                "Compress Images",
+                const AssetImage("assets/compressImagescompleteIcon.png"),
+                "4",
+              ),
+            ],
+          )
+        ]),
       ),
     );
   }

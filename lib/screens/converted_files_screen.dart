@@ -2,10 +2,13 @@ import 'dart:io' as io;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:imagetopdfconverter/classes/ConvertedFilesScreenAppBar.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../MainScreen.dart';
 
 class ConvertedFilesScreen extends StatefulWidget {
   const ConvertedFilesScreen({Key? key}) : super(key: key);
@@ -55,12 +58,35 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ConvertedScreenAppBarClass.getAppBar(),
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Converted Images",
+          style: TextStyle(color: Colors.green),
+          // style: GoogleFonts.dmSans(
+          //   color: Color(0xFF000000),
+          //   fontWeight: FontWeight.bold,
+          // ),
+        ),
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Get.offAll(const MainScreen());
+          },
+        ),
+      ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
                     SizedBox(
@@ -68,12 +94,12 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                       child: StatefulBuilder(
                         builder: ((context, setState) {
                           return file.isEmpty
-                              ? const Center(
+                              ? Center(
                                   child: Text(
-                                    "No Converted Files Available",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
+                                    "No Converted PDFs Available",
+                                    // style: GoogleFonts.dmSans(
+                                    //   fontSize: 18,
+                                    // ),
                                   ),
                                 )
                               : ListView.builder(
@@ -89,8 +115,10 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                           viewConvertedFiles(file[index].path);
                                         },
                                         child: Card(
-                                          elevation: 15,
-                                          shadowColor: Colors.white54,
+                                          shape:
+                                              Border.all(color: Colors.white70),
+                                          elevation: 8,
+                                          shadowColor: Colors.white60,
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(5),
@@ -119,11 +147,18 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Text(file[index]
-                                                            .path
-                                                            .toString()
-                                                            .split("/")
-                                                            .last),
+                                                        Text(
+                                                          file[index]
+                                                              .path
+                                                              .toString()
+                                                              .split("/")
+                                                              .last,
+                                                          // style: GoogleFonts
+                                                          //     .dmSans(
+                                                          //         fontWeight:
+                                                          //             FontWeight
+                                                          //                 .w500),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -140,9 +175,8 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                                     },
                                                     icon: const Icon(
                                                       Icons.share,
+                                                      color: Color(0xFF0A9C19),
                                                     ),
-                                                    color: Color.fromARGB(
-                                                        255, 49, 89, 245),
                                                   ),
                                                   IconButton(
                                                     onPressed: () async {
@@ -153,8 +187,8 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                                     },
                                                     icon: const Icon(
                                                       Icons.delete,
+                                                      color: Color(0xFFD50000),
                                                     ),
-                                                    color: Color(0xFFD50000),
                                                   ),
                                                 ],
                                               ),
@@ -183,34 +217,38 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
       builder: (context) {
         return AlertDialog(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Text(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: Text(
             "Do you want to delete this file?",
+            // style: GoogleFonts.dmSans(fontWeight: FontWeight.w500),
           ),
           content: Text(
             path.toString().split("/").last,
-            style: const TextStyle(
-              color: Color(0xFFD50000),
-            ),
+            // style: GoogleFonts.dmSans(
+            //   color: Color(0xFFD50000),
+            // ),
           ),
           actions: [
             MaterialButton(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(12),
               ),
-              color: const Color(0xff000000),
+              color: Color.fromARGB(255, 226, 51, 51),
               textColor: Colors.white,
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("NO"),
+              child: Text(
+                "NO",
+                // style: GoogleFonts.dmSans(),
+              ),
             ),
             MaterialButton(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(12),
               ),
               textColor: Colors.white,
-              color: const Color.fromARGB(255, 226, 51, 51),
+              color: Color(0xFF1C2978),
               onPressed: () async {
                 setState(() {
                   file.removeAt(index);
@@ -219,7 +257,10 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                 setState(() {});
                 Navigator.of(context).pop(true);
               },
-              child: const Text("YES"),
+              child: Text(
+                "YES",
+                // style: GoogleFonts.dmSans(),
+              ),
             ),
           ],
         );

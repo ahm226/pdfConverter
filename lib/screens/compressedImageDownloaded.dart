@@ -2,11 +2,10 @@ import 'dart:io' as io;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-
-import '../classes/CompressedImagesScreenAppBar.dart';
 
 class CompressedDownloaded extends StatefulWidget {
   const CompressedDownloaded({Key? key}) : super(key: key);
@@ -56,7 +55,26 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CompressedImageScreenAppBarClass.getAppBar(),
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Compressed Images",
+          // style: GoogleFonts.dmSans(
+          //   color: Colors.black,
+          //   fontWeight: FontWeight.bold,
+          // ),
+        ),
+        elevation: 0,
+        leading: const BackButton(
+          color: Color(0xFF000000),
+        ),
+      ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -71,7 +89,7 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                           return file.isEmpty
                               ? const Center(
                                   child: Text(
-                                    "No Compressed File Available",
+                                    "No Compressed Images Available",
                                     style: TextStyle(
                                       fontSize: 18,
                                     ),
@@ -86,12 +104,13 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                                           vertical: 0.0, horizontal: 5.0),
                                       child: InkWell(
                                         onTap: () {
-                                          print(file[index].path);
                                           viewConvertedFiles(file[index].path);
                                         },
                                         child: Card(
-                                          elevation: 15,
-                                          shadowColor: Colors.white54,
+                                          shape:
+                                              Border.all(color: Colors.white70),
+                                          elevation: 8,
+                                          shadowColor: Colors.white60,
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(5),
@@ -151,9 +170,8 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                                                     },
                                                     icon: const Icon(
                                                       Icons.share,
+                                                      color: Color(0xFF0A9C19),
                                                     ),
-                                                    color: Color.fromARGB(
-                                                        255, 49, 89, 245),
                                                   )
                                                 ],
                                               ),

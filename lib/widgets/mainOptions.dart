@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:imagetopdfconverter/screens/CompressingImagesScreen.dart';
 import 'package:imagetopdfconverter/screens/convert_screen.dart';
 import 'package:imagetopdfconverter/screens/converted_files_screen.dart';
@@ -9,81 +10,92 @@ Widget mainOptionsTop(
   BuildContext context,
   String title1,
   String title2,
-  IconData icon1,
-  IconData icon2,
-  IconData icon3,
-  String cardId,
+  AssetImage assetImage1,
+  AssetImage assetImage2,
+  String selectedId,
 ) {
-  return Card(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    elevation: 10,
-    shadowColor: Colors.white60,
-    color: Colors.white,
-    child: InkWell(
-      borderRadius: BorderRadius.circular(20),
-      splashColor: Colors.transparent,
-      onTap: () {
-        if (cardId == "1") {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const ConvertScreen(),
-            ),
-          );
-        } else if (cardId == "2") {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const CompressImagesScreen(),
-            ),
-          );
-        }
-      },
-      child: Container(
-        height: 110,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Icon(
-                      icon1,
-                      size: 50,
-                      color: Color(0xFF0336ff),
-                    ),
-                  ),
-                  Text(
-                    title1,
-                    style: TextStyle(color: Color(0xFF0336ff)),
-                  )
-                ],
-              ),
-              Icon(
-                icon2,
-                size: 30,
-                color: Colors.black,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Icon(
-                      icon3,
-                      size: 50,
-                      color: Color(0xFFD50000),
-                    ),
-                  ),
-                  Text(
-                    title2,
-                    style: TextStyle(color: Color(0xFFD50000)),
-                  )
-                ],
-              )
-            ],
+  return InkWell(
+    onTap: () {
+      if (selectedId == "1") {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ConvertScreen(),
           ),
+        );
+      } else if (selectedId == "2") {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const CompressImagesScreen(),
+          ),
+        );
+      }
+    },
+    child: Container(
+      margin: EdgeInsets.only(
+        right: 20,
+        left: 20,
+      ),
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(10),
+        color: Color(0xffFFFFFF).withOpacity(0.5),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            Column(
+              children: [
+                Text(
+                  title1,
+                  // style: GoogleFonts.poppins(
+                  //   fontSize: 15,
+                  //   fontWeight: FontWeight.w500,
+                  //   color: Colors.white,
+                  // ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Image(
+                      image: assetImage1,
+                    ),
+                    Text(
+                      "--------------->",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Image(
+                      image: assetImage2,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 40,
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: Text(
+                title2,
+                // style: GoogleFonts.poppins(
+                //   fontSize: 17,
+                //   fontWeight: FontWeight.w500,
+                //   color: Colors.black,
+                // ),
+              ),
+            )
+          ],
         ),
       ),
     ),
@@ -93,35 +105,58 @@ Widget mainOptionsTop(
 Widget mainOptionsBottom(
   BuildContext context,
   String title,
-  IconData icon,
+  AssetImage assetImage,
   String cardId,
 ) {
-  return Column(
-    children: [
-      InkWell(
-        splashColor: Colors.transparent,
-        onTap: () {
-          if (cardId == "3") {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ConvertedFilesScreen(),
-              ),
-            );
-          } else if (cardId == "4") {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const CompressedDownloaded(),
-              ),
-            );
-          }
-        },
-        child: Icon(
-          icon,
-          color: Colors.amber,
-          size: 60,
+  return InkWell(
+    onTap: () {
+      if (cardId == "3") {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ConvertedFilesScreen(),
+          ),
+        );
+      } else if (cardId == "4") {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const CompressedDownloaded(),
+          ),
+        );
+      }
+    },
+    child: Container(
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+      constraints: BoxConstraints(
+        minHeight: 130,
+        maxHeight: 150,
+        maxWidth: 150,
+        minWidth: 150,
+      ),
+      child: Card(
+        elevation: 10,
+        shadowColor: Colors.white54,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(
+              image: assetImage,
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Text(
+              title,
+              // style: GoogleFonts.poppins(
+              //     color: Colors.black,
+              //     fontSize: 14,
+              //     fontWeight: FontWeight.w500),
+            )
+          ],
         ),
       ),
-      Text(title)
-    ],
+    ),
   );
 }
