@@ -22,7 +22,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final String folername = "convertfiles";
+  final String folername = "ImagetoPDF";
+  String folername1 = "compressedImages";
   // This widget is the root of your application.
 
   Future<String> createFolder(String name) async {
@@ -46,6 +47,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     createFolder(folername);
+    createFolder(folername1);
     super.initState();
   }
 

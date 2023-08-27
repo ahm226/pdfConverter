@@ -3,11 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:imagetopdfconverter/widgets/message_widget_error.dart';
-import 'package:imagetopdfconverter/widgets/message_widget_infromation.dart';
+import 'package:imagetopdfconverter/classes/customDialog.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -28,7 +26,8 @@ class _ConvertScreenState extends State<ConvertScreen> {
   var pdf = pw.Document();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _userfilename = TextEditingController();
-  String folername = "convertfiles";
+  String folername = "ImagetoPDF";
+  late String _dropDownValueO = 'landscape';
   late String _dropDownValue = 'a4';
 
   List<dynamic>? selectedImages = [];
@@ -54,6 +53,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    files.clear();
     pdfImagelimit.value = 0;
   }
 
@@ -61,19 +61,20 @@ class _ConvertScreenState extends State<ConvertScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(
+        systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light,
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
-          "Choose Images",
-          // style: GoogleFonts.dmSans(
-          //   color: Colors.black,
-          //   fontWeight: FontWeight.bold,
-          // ),
+        title: const Text(
+          "Select Images from",
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: "DM Sans",
+            fontWeight: FontWeight.bold,
+          ),
         ),
         elevation: 0,
         leading: const BackButton(
@@ -98,12 +99,13 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         Icons.camera_alt,
                         size: 22,
                       ),
-                      label: Text(
+                      label: const Text(
                         "Camera",
-                        // style: GoogleFonts.dmSans(
-                        //   color: Colors.white,
-                        //   fontSize: 18,
-                        // ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontFamily: "DM Sans",
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -128,12 +130,13 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         Icons.sd_storage_sharp,
                         size: 22,
                       ),
-                      label: Text(
+                      label: const Text(
                         "Storage",
-                        // style: GoogleFonts.dmSans(
-                        //   color: Colors.white,
-                        //   fontSize: 18,
-                        // ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontFamily: "DM Sans",
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -161,9 +164,10 @@ class _ConvertScreenState extends State<ConvertScreen> {
                 children: [
                   Text(
                     pdfImagelimit.value.toString() + "/100",
-                    // style: GoogleFonts.dmSans(
-                    //   color: Colors.black,
-                    // ),
+                    style: const TextStyle(
+                      fontFamily: "DM Sans",
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -213,22 +217,26 @@ class _ConvertScreenState extends State<ConvertScreen> {
                                                     CrossAxisAlignment.start,
                                                 children: <Widget>[
                                                   Text(
+                                                    // file.path,
                                                     file.path.split("/").last,
                                                     maxLines: 1,
-                                                    // style: GoogleFonts.dmSans(
-                                                    //     color: Colors.black,
-                                                    //     fontWeight:
-                                                    //         FontWeight.w500),
+                                                    style: const TextStyle(
+                                                        fontFamily: "DM Sans",
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
                                                   ),
                                                   Text(
                                                     file.path
                                                         .toString()
                                                         .split(".")
                                                         .last,
-                                                    // style: GoogleFonts.dmSans(
-                                                    //     color: Colors.grey,
-                                                    //     fontWeight:
-                                                    //         FontWeight.w500),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -257,10 +265,11 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         : Center(
                             child: Text(
                               "No image selected",
-                              // style: GoogleFonts.dmSans(
-                              //   color: Colors.black,
-                              //   fontSize: 18,
-                              // ),
+                              style: TextStyle(
+                                fontFamily: "DM Sans",
+                                color: Colors.black,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
               ),
@@ -276,10 +285,12 @@ class _ConvertScreenState extends State<ConvertScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   if (files.isEmpty) {
-                    showMessageForError(
-                      "No image selected, kindly choose images",
-                      context,
-                    );
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomDialog(context,
+                              "No image selected, kindly choose images");
+                        });
                   } else {
                     Random random = Random();
                     randomNumber.value = random.nextInt(100000000);
@@ -299,11 +310,12 @@ class _ConvertScreenState extends State<ConvertScreen> {
                 child: Text(
                   "Convert",
                   textAlign: TextAlign.center,
-                  // style: GoogleFonts.dmSans(
-                  //   color: Colors.white,
-                  //   fontWeight: FontWeight.w500,
-                  //   fontSize: 22,
-                  // ),
+                  style: TextStyle(
+                    fontFamily: "DM Sans",
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 22,
+                  ),
                 ),
               ),
             )
@@ -325,7 +337,11 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       int.parse(selectedImages!.length.toString());
                 })
               }
-            : showMessageForInformation("limit exceeded", context);
+            : showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog(context, "limit exceeded");
+                });
       } else {
         pdfImagelimit.value < 100
             ? {
@@ -335,7 +351,11 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       int.parse(selectedImages!.length.toString());
                 })
               }
-            : showMessageForInformation("limit exceeded", context);
+            : showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog(context, "limit exceeded");
+                });
       }
     }
     if (inputSource != 'gallery') {
@@ -376,7 +396,11 @@ class _ConvertScreenState extends State<ConvertScreen> {
                     pdfImagelimit.value++;
                   })
                 }
-              : showMessageForInformation("limit exceeded", context);
+              : showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CustomDialog(context, "limit exceeded");
+                  });
         } else {
           // files.add(result.path.map((e) => File(e!)).toList());
           pdfImagelimit.value < 100
@@ -386,7 +410,11 @@ class _ConvertScreenState extends State<ConvertScreen> {
                     pdfImagelimit.value++;
                   })
                 }
-              : showMessageForInformation("limit exceeded", context);
+              : showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CustomDialog(context, "limit exceeded");
+                  });
         }
       }
     }
@@ -409,7 +437,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
               content: Form(
                 key: _formKey,
                 child: Container(
-                  height: 160,
+                  height: 180,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -421,9 +449,10 @@ class _ConvertScreenState extends State<ConvertScreen> {
                           decoration: InputDecoration(
                             label: Text(
                               "File name",
-                              // style: GoogleFonts.dmSans(
-                              //   color: Colors.black,
-                              // ),
+                              style: TextStyle(
+                                fontFamily: "DM Sans",
+                                color: Colors.black,
+                              ),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -464,11 +493,12 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         children: [
                           Text(
                             "Page size",
-                            // style: GoogleFonts.dmSans(
-                            //   fontWeight: FontWeight.bold,
-                            //   fontSize: 15,
-                            //   color: Colors.black,
-                            // ),
+                            style: TextStyle(
+                              fontFamily: "DM Sans",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
                           ),
                           Container(
                             width: 100,
@@ -498,7 +528,49 @@ class _ConvertScreenState extends State<ConvertScreen> {
                             ),
                           ),
                         ],
-                      )
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Page Orientation",
+                            style: TextStyle(
+                              fontFamily: "DM Sans",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            child: DropdownButton(
+                              hint: _dropDownValueO == null
+                                  ? const Text('landscape')
+                                  : Text(
+                                      _dropDownValueO,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                              isExpanded: true,
+                              iconSize: 30.0,
+                              items: ['landscape', 'portrait'].map(
+                                (val) {
+                                  return DropdownMenuItem<String>(
+                                    value: val,
+                                    child: Text(val),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (val) {
+                                setState(
+                                  () {
+                                    _dropDownValueO = (val as String?)!;
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -511,7 +583,9 @@ class _ConvertScreenState extends State<ConvertScreen> {
                   textColor: Colors.white,
                   child: Text(
                     "Cancel",
-                    // style: GoogleFonts.dmSans(),
+                    style: TextStyle(
+                      fontFamily: "DM Sans",
+                    ),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -520,11 +594,10 @@ class _ConvertScreenState extends State<ConvertScreen> {
                 MaterialButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
-                  child: Text(
-                    "Done",
-                    // style:
-                    // GoogleFonts.dmSans()
-                  ),
+                  child: Text("Done",
+                      style: TextStyle(
+                        fontFamily: "DM Sans",
+                      )),
                   textColor: Colors.white,
                   color: Color(0xFF1C2978),
                   onPressed: () async {
@@ -534,17 +607,19 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       await savePDF(_userfilename.text, files);
 
                       Navigator.of(context).pop();
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => const ConvertedFilesScreen(),
                         ),
                       );
                       _userfilename.clear();
                       files.clear();
-                      // showMessageForSuccess(
-                      //   "File converted Successfully ",
-                      //   context,
-                      // );
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomDialog(
+                                context, "File converted Successfully");
+                          });
                     }
                   },
                 ),
@@ -565,13 +640,24 @@ class _ConvertScreenState extends State<ConvertScreen> {
 
         pdf.addPage(
           pw.Page(
-            pageFormat: _dropDownValue == 'a4'
-                ? PdfPageFormat.a4
-                : _dropDownValue == 'a3'
-                    ? PdfPageFormat.a3
-                    : _dropDownValue == 'a5'
-                        ? PdfPageFormat.a5
-                        : PdfPageFormat.a6, //a4,a3,a6,a5
+            orientation: _dropDownValueO == 'landscape'
+                ? pw.PageOrientation.landscape
+                : pw.PageOrientation.portrait,
+            pageFormat: _dropDownValueO == 'landscape'
+                ? (_dropDownValue == 'a4'
+                    ? PdfPageFormat.a4.landscape
+                    : _dropDownValue == 'a3'
+                        ? PdfPageFormat.a3.landscape
+                        : _dropDownValue == 'a5'
+                            ? PdfPageFormat.a5.landscape
+                            : PdfPageFormat.a6.landscape)
+                : (_dropDownValue == 'a4'
+                    ? PdfPageFormat.a4.portrait
+                    : _dropDownValue == 'a3'
+                        ? PdfPageFormat.a3.portrait
+                        : _dropDownValue == 'a5'
+                            ? PdfPageFormat.a5.portrait
+                            : PdfPageFormat.a6.portrait), //a4,a3,a6,a5
             build: (pw.Context context) {
               return pw.Center(
                 child: pw.Image(image),

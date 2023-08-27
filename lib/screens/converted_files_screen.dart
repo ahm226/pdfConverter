@@ -18,7 +18,7 @@ class ConvertedFilesScreen extends StatefulWidget {
 }
 
 class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
-  final String folername = "convertfiles";
+  final String folername = "ImagetoPDF";
   late String directory;
   List file = [];
   bool isLoading = false;
@@ -68,11 +68,11 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
         centerTitle: true,
         title: Text(
           "Converted Images",
-          style: TextStyle(color: Colors.green),
-          // style: GoogleFonts.dmSans(
-          //   color: Color(0xFF000000),
-          //   fontWeight: FontWeight.bold,
-          // ),
+          style: TextStyle(
+            fontFamily: "DM Sans",
+            color: Color(0xFF000000),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         elevation: 0,
         leading: IconButton(
@@ -97,9 +97,10 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                               ? Center(
                                   child: Text(
                                     "No Converted PDFs Available",
-                                    // style: GoogleFonts.dmSans(
-                                    //   fontSize: 18,
-                                    // ),
+                                    style: TextStyle(
+                                      fontFamily: "DM Sans",
+                                      fontSize: 18,
+                                    ),
                                   ),
                                 )
                               : ListView.builder(
@@ -153,11 +154,12 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                                               .toString()
                                                               .split("/")
                                                               .last,
-                                                          // style: GoogleFonts
-                                                          //     .dmSans(
-                                                          //         fontWeight:
-                                                          //             FontWeight
-                                                          //                 .w500),
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "DM Sans",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
                                                         ),
                                                       ],
                                                     ),
@@ -220,13 +222,17 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           title: Text(
             "Do you want to delete this file?",
-            // style: GoogleFonts.dmSans(fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontFamily: "DM Sans",
+            ),
           ),
           content: Text(
             path.toString().split("/").last,
-            // style: GoogleFonts.dmSans(
-            //   color: Color(0xFFD50000),
-            // ),
+            style: TextStyle(
+              fontFamily: "DM Sans",
+              color: Color(0xFFD50000),
+            ),
           ),
           actions: [
             MaterialButton(
@@ -240,7 +246,9 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
               },
               child: Text(
                 "NO",
-                // style: GoogleFonts.dmSans(),
+                style: TextStyle(
+                  fontFamily: "DM Sans",
+                ),
               ),
             ),
             MaterialButton(
@@ -259,7 +267,9 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
               },
               child: Text(
                 "YES",
-                // style: GoogleFonts.dmSans(),
+                style: TextStyle(
+                  fontFamily: "DM Sans",
+                ),
               ),
             ),
           ],
