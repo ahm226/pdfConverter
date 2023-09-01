@@ -17,6 +17,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    var useMobileLayout = shortestSide < 600;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: drawerWidget(),
@@ -34,54 +37,99 @@ class _MainScreenState extends State<MainScreen> {
             ),
             child: Padding(
               padding: EdgeInsets.only(top: 110),
-              child: Column(
-                children: [
-                  mainOptionsTop(
-                    context,
-                    "Convert Image to PDF",
-                    "Use Now",
-                    const AssetImage("assets/gallery.png"),
-                    const AssetImage("assets/pdficon.png"),
-                    "1",
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  mainOptionsTop(
-                    context,
-                    "Compress Images",
-                    "Use Now",
-                    const AssetImage("assets/gallery.png"),
-                    const AssetImage("assets/compressicon.png"),
-                    "2",
-                  ),
-                ],
-              ),
+              child: useMobileLayout
+                  ? Column(
+                      children: [
+                        mainOptionsTop(
+                          context,
+                          "Convert Image to PDF",
+                          "Use Now",
+                          const AssetImage("assets/gallery.png"),
+                          const AssetImage("assets/pdficon.png"),
+                          "1",
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        mainOptionsTop(
+                          context,
+                          "Compress Images",
+                          "Use Now",
+                          const AssetImage("assets/gallery.png"),
+                          const AssetImage("assets/compressicon.png"),
+                          "2",
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        mainOptionsTopForTabs(
+                          context,
+                          "Convert Image to PDF",
+                          "Use Now",
+                          const AssetImage("assets/gallery.png"),
+                          const AssetImage("assets/pdficon.png"),
+                          "1",
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        mainOptionsTopForTabs(
+                          context,
+                          "Compress Images",
+                          "Use Now",
+                          const AssetImage("assets/gallery.png"),
+                          const AssetImage("assets/compressicon.png"),
+                          "2",
+                        ),
+                      ],
+                    ),
             ),
           ),
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              mainOptionsBottom(
-                context,
-                "PDF Images",
-                const AssetImage("assets/pdfcompletedicon.png"),
-                "3",
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              mainOptionsBottom(
-                context,
-                "Compress Images",
-                const AssetImage("assets/compressImagescompleteIcon.png"),
-                "4",
-              ),
-            ],
-          )
+          useMobileLayout
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    mainOptionsBottom(
+                      context,
+                      "PDF Images",
+                      const AssetImage("assets/pdfcompletedicon.png"),
+                      "3",
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    mainOptionsBottom(
+                      context,
+                      "Compressed Images",
+                      const AssetImage("assets/compressImagescompleteIcon.png"),
+                      "4",
+                    ),
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    mainOptionsBottomForTabs(
+                      context,
+                      "PDF Images",
+                      const AssetImage("assets/pdfcompletedicon.png"),
+                      "3",
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    mainOptionsBottomForTabs(
+                      context,
+                      "Compressed Images",
+                      const AssetImage("assets/compressImagescompleteIcon.png"),
+                      "4",
+                    ),
+                  ],
+                ),
         ]),
       ),
     );

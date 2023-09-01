@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
 class MainScreenAppBarClass {
   static getAppBar() {
@@ -28,8 +27,11 @@ class MainScreenAppBarClass {
       ),
       title: Text(
         "Welcome !",
-        // style: GoogleFonts.dmSans(
-        //     color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontFamily: "DM Sans",
+        ),
       ),
       elevation: 0,
     );

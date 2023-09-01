@@ -65,10 +65,11 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
         centerTitle: true,
         title: Text(
           "Compressed Images",
-          // style: GoogleFonts.dmSans(
-          //   color: Colors.black,
-          //   fontWeight: FontWeight.bold,
-          // ),
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontFamily: "DM Sans",
+          ),
         ),
         elevation: 0,
         leading: const BackButton(
@@ -99,6 +100,14 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                                   shrinkWrap: true,
                                   itemCount: file.length,
                                   itemBuilder: (context, int index) {
+                                    final kb = file[index]!
+                                            .readAsBytesSync()
+                                            .lengthInBytes /
+                                        1024;
+                                    final mb = kb / 1024;
+                                    final size = (mb >= 1)
+                                        ? '${mb.toStringAsFixed(2)} MB'
+                                        : '${kb.toStringAsFixed(2)} KB';
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 0.0, horizontal: 5.0),
@@ -147,13 +156,12 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                                                               .last,
                                                           maxLines: 1,
                                                         ),
-                                                        Text((file[index]!
-                                                                        .readAsBytesSync()
-                                                                        .lengthInBytes /
-                                                                    1024)
-                                                                .toStringAsFixed(
-                                                                    2) +
-                                                            "kb"),
+                                                        Text(
+                                                          size,
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -172,7 +180,19 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                                                       Icons.share,
                                                       color: Color(0xFF0A9C19),
                                                     ),
-                                                  )
+                                                  ),
+                                                  IconButton(
+                                                    onPressed: () async {
+                                                      await deleteConvertedFileDailog(
+                                                          context,
+                                                          file[index].path,
+                                                          index);
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.delete,
+                                                      color: Color(0xFFD50000),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -202,7 +222,7 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: const Text(
-            "Do you want to delete this file?",
+            "Do you want to delete this Image?",
           ),
           content: Text(
             path.toString().split("/").last,
