@@ -8,6 +8,8 @@ import 'package:imagetopdfconverter/MainScreen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'classes/Helper.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -24,14 +26,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final String folername = "ImagetoPDF";
   String folername1 = "compressedImages";
-  // This widget is the root of your application.
-
   Future<String> createFolder(String name) async {
     Directory? directory = Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationSupportDirectory();
-
-    final subdir = Directory((directory)!.path + '/$name');
+    final subdir = Directory("/storage/emulated/0/Download/$name");
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();
@@ -44,10 +43,17 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  getData() async {
+    await checkPermission(context);
+    if (permit.value) {
+      createFolder(folername);
+      createFolder(folername1);
+    }
+  }
+
   @override
   void initState() {
-    createFolder(folername);
-    createFolder(folername1);
+    getData();
     super.initState();
   }
 
@@ -55,7 +61,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Image to pdf: Image compressor',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,

@@ -3,6 +3,7 @@ import 'package:imagetopdfconverter/screens/CompressingImagesScreen.dart';
 import 'package:imagetopdfconverter/screens/convert_screen.dart';
 import 'package:imagetopdfconverter/screens/converted_files_screen.dart';
 
+import '../classes/Helper.dart';
 import '../screens/compressedImageDownloaded.dart';
 
 Widget mainOptionsTop(
@@ -127,17 +128,21 @@ Widget mainOptionsBottom(
   return InkWell(
     onTap: () {
       if (cardId == "3") {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const ConvertedFilesScreen(),
-          ),
-        );
+        permit.value
+            ? Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ConvertedFilesScreen(),
+                ),
+              )
+            : checkPermission(context);
       } else if (cardId == "4") {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const CompressedDownloaded(),
-          ),
-        );
+        permit.value
+            ? Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const CompressedDownloaded(),
+                ),
+              )
+            : checkPermission(context);
       }
     },
     child: Container(
@@ -305,17 +310,21 @@ Widget mainOptionsBottomForTabs(
   return InkWell(
     onTap: () {
       if (cardId == "3") {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const ConvertedFilesScreen(),
-          ),
-        );
+        permit.value
+            ? Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ConvertedFilesScreen(),
+                ),
+              )
+            : checkPermission(context);
       } else if (cardId == "4") {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const CompressedDownloaded(),
-          ),
-        );
+        permit.value
+            ? Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const CompressedDownloaded(),
+                ),
+              )
+            : checkPermission(context);
       }
     },
     child: Container(

@@ -116,7 +116,9 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         elevation: 10,
                       ),
                       onPressed: () async {
-                        getImagesFromStorage("camera");
+                        permit.value
+                            ? getImagesFromStorage("camera")
+                            : checkPermission(context);
                       },
                     ),
                   ),
@@ -147,7 +149,9 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         elevation: 10,
                       ),
                       onPressed: () {
-                        getImagesFromStorage("gallery");
+                        permit.value
+                            ? getImagesFromStorage("gallery")
+                            : checkPermission(context);
                       },
                     ),
                   ),
@@ -184,6 +188,10 @@ class _ConvertScreenState extends State<ConvertScreen> {
                             itemCount: files.length,
                             itemBuilder: (context, index) {
                               final file = files[index];
+                              List<String> nameAndExtension =
+                                  file.path.split("/").last.split('.');
+                              String fileNameWithoutExtension =
+                                  nameAndExtension[0];
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 0.0, horizontal: 5.0),
@@ -217,8 +225,8 @@ class _ConvertScreenState extends State<ConvertScreen> {
                                                     CrossAxisAlignment.start,
                                                 children: <Widget>[
                                                   Text(
-                                                    // file.path,
-                                                    file.path.split("/").last,
+                                                    fileNameWithoutExtension,
+                                                    // file.path.split("/").last,
                                                     maxLines: 1,
                                                     style: const TextStyle(
                                                         fontFamily: "DM Sans",
