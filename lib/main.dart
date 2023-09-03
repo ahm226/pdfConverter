@@ -6,7 +6,6 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:imagetopdfconverter/MainScreen.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'classes/Helper.dart';
 
@@ -31,10 +30,6 @@ class _MyAppState extends State<MyApp> {
         ? await getExternalStorageDirectory()
         : await getApplicationSupportDirectory();
     final subdir = Directory("/storage/emulated/0/Download/$name");
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
     if ((await subdir.exists())) {
       return subdir.path;
     } else {

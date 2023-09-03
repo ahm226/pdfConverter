@@ -67,7 +67,6 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
           "Compressed Images",
           style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold,
             fontFamily: "DM Sans",
           ),
         ),
@@ -83,126 +82,122 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                 padding: const EdgeInsets.only(top: 20),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 550,
-                      child: StatefulBuilder(
-                        builder: ((context, setState) {
-                          return file.isEmpty
-                              ? const Center(
-                                  child: Text(
-                                    "No Compressed Images Available",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
+                    StatefulBuilder(
+                      builder: ((context, setState) {
+                        return file.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  "No Compressed Images Available",
+                                  style: TextStyle(
+                                    fontSize: 18,
                                   ),
-                                )
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: file.length,
-                                  itemBuilder: (context, int index) {
-                                    final kb = file[index]!
-                                            .readAsBytesSync()
-                                            .lengthInBytes /
-                                        1024;
-                                    final mb = kb / 1024;
-                                    final size = (mb >= 1)
-                                        ? '${mb.toStringAsFixed(2)} MB'
-                                        : '${kb.toStringAsFixed(2)} KB';
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 0.0, horizontal: 5.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          viewConvertedFiles(file[index].path);
-                                        },
-                                        child: Card(
-                                          shape:
-                                              Border.all(color: Colors.white70),
-                                          elevation: 8,
-                                          shadowColor: Colors.white60,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: Container(
-                                              height: 70,
-                                              color: Colors.white,
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 59,
-                                                    height: 70,
-                                                    child: Image.file(
-                                                      File(file[index]!
-                                                          .path
-                                                          .toString()),
-                                                      fit: BoxFit.fill,
-                                                    ),
+                                ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: file.length,
+                                itemBuilder: (context, int index) {
+                                  final kb = file[index]!
+                                          .readAsBytesSync()
+                                          .lengthInBytes /
+                                      1024;
+                                  final mb = kb / 1024;
+                                  final size = (mb >= 1)
+                                      ? '${mb.toStringAsFixed(2)} MB'
+                                      : '${kb.toStringAsFixed(2)} KB';
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 0.0, horizontal: 5.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        viewConvertedFiles(file[index].path);
+                                      },
+                                      child: Card(
+                                        shape:
+                                            Border.all(color: Colors.white70),
+                                        elevation: 8,
+                                        shadowColor: Colors.white60,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Container(
+                                            height: 70,
+                                            color: Colors.white,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 59,
+                                                  height: 70,
+                                                  child: Image.file(
+                                                    File(file[index]!
+                                                        .path
+                                                        .toString()),
+                                                    fit: BoxFit.fill,
                                                   ),
-                                                  const SizedBox(width: 10),
-                                                  Expanded(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          file[index]
-                                                              .path
-                                                              .toString()
-                                                              .split("/")
-                                                              .last,
-                                                          maxLines: 1,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        file[index]
+                                                            .path
+                                                            .toString()
+                                                            .split("/")
+                                                            .last,
+                                                        maxLines: 1,
+                                                      ),
+                                                      Text(
+                                                        size,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
                                                         ),
-                                                        Text(
-                                                          size,
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  IconButton(
-                                                    onPressed: () async {
-                                                      Share.shareFiles([
-                                                        '${file[index].path}'
-                                                      ],
-                                                          text: file[index]
-                                                              .path
-                                                              .toString()
-                                                              .split("/")
-                                                              .last);
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.share,
-                                                      color: Color(0xFF0A9C19),
-                                                    ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    Share.shareFiles(
+                                                        ['${file[index].path}'],
+                                                        text: file[index]
+                                                            .path
+                                                            .toString()
+                                                            .split("/")
+                                                            .last);
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.share,
+                                                    color: Color(0xFF0A9C19),
                                                   ),
-                                                  IconButton(
-                                                    onPressed: () async {
-                                                      await deleteConvertedFileDailog(
-                                                          context,
-                                                          file[index].path,
-                                                          index);
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.delete,
-                                                      color: Color(0xFFD50000),
-                                                    ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    await deleteConvertedFileDailog(
+                                                        context,
+                                                        file[index].path,
+                                                        index);
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.delete,
+                                                    color: Color(0xFFD50000),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  });
-                        }),
-                      ),
+                                    ),
+                                  );
+                                });
+                      }),
                     ),
                   ],
                 ),
@@ -220,34 +215,42 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
       builder: (context) {
         return AlertDialog(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           title: const Text(
             "Do you want to delete this Image?",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontFamily: "DM Sans",
+            ),
           ),
           content: Text(
             path.toString().split("/").last,
-            style: const TextStyle(
+            style: TextStyle(
               color: Color(0xFFD50000),
+              fontFamily: "DM Sans",
             ),
           ),
           actions: [
             MaterialButton(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(12),
               ),
-              color: const Color(0xff000000),
+              color: Color.fromARGB(255, 226, 51, 51),
               textColor: Colors.white,
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("NO"),
+              child: const Text("NO",
+                  style: TextStyle(
+                    fontFamily: "DM Sans",
+                  )),
             ),
             MaterialButton(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(12),
               ),
               textColor: Colors.white,
-              color: const Color.fromARGB(255, 226, 51, 51),
+              color: Color(0xFF1C2978),
               onPressed: () async {
                 setState(() {
                   file.removeAt(index);
@@ -256,7 +259,9 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                 setState(() {});
                 Navigator.of(context).pop(true);
               },
-              child: const Text("YES"),
+              child: const Text(
+                "YES",
+              ),
             ),
           ],
         );

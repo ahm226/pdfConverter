@@ -73,7 +73,6 @@ class _ConvertScreenState extends State<ConvertScreen> {
           style: TextStyle(
             color: Colors.black,
             fontFamily: "DM Sans",
-            fontWeight: FontWeight.bold,
           ),
         ),
         elevation: 0,
@@ -81,254 +80,246 @@ class _ConvertScreenState extends State<ConvertScreen> {
           color: Color(0xFF000000),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width * 0.4,
-                      minHeight: MediaQuery.of(context).size.height * 0.075,
-                    ),
-                    child: ElevatedButton.icon(
-                      icon: const Icon(
-                        Icons.camera_alt,
-                        size: 22,
-                      ),
-                      label: const Text(
-                        "Camera",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontFamily: "DM Sans",
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        backgroundColor: Color(0xff1C2978),
-                        shadowColor: Colors.white38,
-                        elevation: 10,
-                      ),
-                      onPressed: () async {
-                        permit.value
-                            ? getImagesFromStorage("camera")
-                            : checkPermission(context);
-                      },
-                    ),
-                  ),
-                  Container(
-                    constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width * 0.4,
-                      minHeight: MediaQuery.of(context).size.height * 0.075,
-                    ),
-                    child: ElevatedButton.icon(
-                      icon: const Icon(
-                        Icons.sd_storage_sharp,
-                        size: 22,
-                      ),
-                      label: const Text(
-                        "Storage",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontFamily: "DM Sans",
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        backgroundColor: Color(0xff1C2978),
-                        shadowColor: Colors.white38,
-                        elevation: 10,
-                      ),
-                      onPressed: () {
-                        permit.value
-                            ? getImagesFromStorage("gallery")
-                            : checkPermission(context);
-                      },
-                    ),
-                  ),
-                ],
-              ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.only(left: 50, right: 50, bottom: 5),
+        constraints: BoxConstraints(
+          minWidth: MediaQuery.of(context).size.width * 0.5,
+          minHeight: MediaQuery.of(context).size.height * 0.065,
+        ),
+        child: ElevatedButton(
+          onPressed: () {
+            if (files.isEmpty) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CustomDialog(
+                        context, "No image selected, kindly choose images");
+                  });
+            } else {
+              Random random = Random();
+              randomNumber.value = random.nextInt(100000000);
+              _userfilename.text =
+                  "imagetopdf_" + randomNumber.value.toString();
+              fileNameDailog(context, files, status);
+              setState(() {});
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-            const SizedBox(
-              height: 15,
+            backgroundColor: const Color.fromARGB(255, 226, 51, 51),
+            shadowColor: const Color(0xFFD50000),
+          ),
+          child: Text(
+            "Convert",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: "DM Sans",
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: 22,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    pdfImagelimit.value.toString() + "/100",
-                    style: const TextStyle(
-                      fontFamily: "DM Sans",
-                      color: Colors.black,
-                    ),
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width * 0.4,
+                    minHeight: MediaQuery.of(context).size.height * 0.075,
                   ),
-                ],
-              ),
+                  child: ElevatedButton.icon(
+                    icon: const Icon(
+                      Icons.camera_alt,
+                      size: 22,
+                    ),
+                    label: const Text(
+                      "Camera",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontFamily: "DM Sans",
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      backgroundColor: Color(0xff1C2978),
+                      shadowColor: Colors.white38,
+                      elevation: 10,
+                    ),
+                    onPressed: () async {
+                      permit.value
+                          ? getImagesFromStorage("camera")
+                          : checkPermission(context);
+                    },
+                  ),
+                ),
+                Container(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width * 0.4,
+                    minHeight: MediaQuery.of(context).size.height * 0.075,
+                  ),
+                  child: ElevatedButton.icon(
+                    icon: const Icon(
+                      Icons.sd_storage_sharp,
+                      size: 22,
+                    ),
+                    label: const Text(
+                      "Storage",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontFamily: "DM Sans",
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      backgroundColor: Color(0xff1C2978),
+                      shadowColor: Colors.white38,
+                      elevation: 10,
+                    ),
+                    onPressed: () {
+                      print(permit.value);
+                      permit.value
+                          ? getImagesFromStorage("gallery")
+                          : checkPermission(context);
+                    },
+                  ),
+                ),
+              ],
             ),
-            Padding(
+          ),
+          const SizedBox(
+            height: 6,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  pdfImagelimit.value.toString() + "/100",
+                  style: const TextStyle(
+                    fontFamily: "DM Sans",
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.60,
-                child:
-                    //ImagesList(files: files),
-                    files.isNotEmpty
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: files.length,
-                            itemBuilder: (context, index) {
-                              final file = files[index];
-                              List<String> nameAndExtension =
-                                  file.path.split("/").last.split('.');
-                              String fileNameWithoutExtension =
-                                  nameAndExtension[0];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 0.0, horizontal: 5.0),
-                                child: InkWell(
-                                  onTap: () => viewFile(file),
-                                  child: Card(
-                                    shape: Border.all(color: Colors.white70),
-                                    shadowColor: Colors.white60,
-                                    elevation: 8,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(5),
-                                      child: Container(
+              child: files.isNotEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: files.length,
+                      itemBuilder: (context, index) {
+                        final file = files[index];
+                        List<String> nameAndExtension =
+                            file.path.split("/").last.split('.');
+                        String fileNameWithoutExtension = nameAndExtension[0];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0.0, horizontal: 5.0),
+                          child: InkWell(
+                            onTap: () => viewFile(file),
+                            child: Card(
+                              shape: Border.all(color: Colors.white70),
+                              shadowColor: Colors.white60,
+                              elevation: 8,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: 70,
+                                  color: Colors.white,
+                                  child: Row(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        width: 59,
                                         height: 70,
-                                        color: Colors.white,
-                                        child: Row(
+                                        child: Image.file(
+                                          File(file.path.toString()),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
+                                            Text(
+                                              fileNameWithoutExtension,
+                                              // file.path.split("/").last,
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                fontFamily: "DM Sans",
+                                                color: Colors.black,
+                                              ),
+                                            ),
                                             SizedBox(
-                                              width: 59,
-                                              height: 70,
-                                              child: Image.file(
-                                                File(file.path.toString()),
-                                                fit: BoxFit.fill,
-                                              ),
+                                              height: 5,
                                             ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Text(
-                                                    fileNameWithoutExtension,
-                                                    // file.path.split("/").last,
-                                                    maxLines: 1,
-                                                    style: const TextStyle(
-                                                        fontFamily: "DM Sans",
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    file.path
-                                                        .toString()
-                                                        .split(".")
-                                                        .last,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  pdfImagelimit.value--;
-                                                  files.remove(file);
-                                                });
-                                              },
-                                              icon: const Icon(
-                                                Icons.cancel,
-                                                color: const Color(0xFFD50000),
+                                            Text(
+                                              file.path
+                                                  .toString()
+                                                  .split(".")
+                                                  .last,
+                                              style: TextStyle(
+                                                color: Colors.grey,
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            pdfImagelimit.value--;
+                                            files.remove(file);
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.cancel,
+                                          color: const Color(0xFFD50000),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                          )
-                        : Center(
-                            child: Text(
-                              "No image selected",
-                              style: TextStyle(
-                                fontFamily: "DM Sans",
-                                color: Colors.black,
-                                fontSize: 18,
                               ),
                             ),
                           ),
-              ),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        "No image selected",
+                        style: TextStyle(
+                          fontFamily: "DM Sans",
+                          color: Colors.black,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              constraints: BoxConstraints(
-                minWidth: MediaQuery.of(context).size.width * 0.5,
-                minHeight: MediaQuery.of(context).size.height * 0.065,
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (files.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CustomDialog(context,
-                              "No image selected, kindly choose images");
-                        });
-                  } else {
-                    Random random = Random();
-                    randomNumber.value = random.nextInt(100000000);
-                    _userfilename.text =
-                        "imagetopdf_" + randomNumber.value.toString();
-                    fileNameDailog(context, files, status);
-                    setState(() {});
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 226, 51, 51),
-                  shadowColor: const Color(0xFFD50000),
-                ),
-                child: Text(
-                  "Convert",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: "DM Sans",
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 22,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -503,7 +494,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                             "Page size",
                             style: TextStyle(
                               fontFamily: "DM Sans",
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               fontSize: 15,
                               color: Colors.black,
                             ),
@@ -541,10 +532,10 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Page Orientation",
+                            "Orientation",
                             style: TextStyle(
                               fontFamily: "DM Sans",
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               fontSize: 15,
                               color: Colors.black,
                             ),

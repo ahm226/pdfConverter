@@ -27,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
       body: SingleChildScrollView(
         child: Column(children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.5,
+            padding: EdgeInsets.only(top: 100),
             width: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -35,56 +35,47 @@ class _MainScreenState extends State<MainScreen> {
                 fit: BoxFit.fill,
               ),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(top: 110),
-              child: useMobileLayout
-                  ? Column(
-                      children: [
-                        mainOptionsTop(
-                          context,
-                          "Convert Image to PDF",
-                          "Use Now",
-                          const AssetImage("assets/gallery.png"),
-                          const AssetImage("assets/pdficon.png"),
-                          "1",
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        mainOptionsTop(
-                          context,
-                          "Compress Images",
-                          "Use Now",
-                          const AssetImage("assets/gallery.png"),
-                          const AssetImage("assets/compressicon.png"),
-                          "2",
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        mainOptionsTopForTabs(
-                          context,
-                          "Convert Image to PDF",
-                          "Use Now",
-                          const AssetImage("assets/gallery.png"),
-                          const AssetImage("assets/pdficon.png"),
-                          "1",
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        mainOptionsTopForTabs(
-                          context,
-                          "Compress Images",
-                          "Use Now",
-                          const AssetImage("assets/gallery.png"),
-                          const AssetImage("assets/compressicon.png"),
-                          "2",
-                        ),
-                      ],
-                    ),
-            ),
+            child: useMobileLayout
+                ? Column(
+                    children: [
+                      mainOptionsTop(
+                        context,
+                        "Convert Image to PDF",
+                        "Use Now",
+                        const AssetImage("assets/gallery.png"),
+                        const AssetImage("assets/pdficon.png"),
+                        "1",
+                      ),
+                      mainOptionsTop(
+                        context,
+                        "Compress Images",
+                        "Use Now",
+                        const AssetImage("assets/gallery.png"),
+                        const AssetImage("assets/compressicon.png"),
+                        "2",
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      mainOptionsTopForTabs(
+                        context,
+                        "Convert Image to PDF",
+                        "Use Now",
+                        const AssetImage("assets/gallery.png"),
+                        const AssetImage("assets/pdficon.png"),
+                        "1",
+                      ),
+                      mainOptionsTopForTabs(
+                        context,
+                        "Compress Images",
+                        "Use Now",
+                        const AssetImage("assets/gallery.png"),
+                        const AssetImage("assets/compressicon.png"),
+                        "2",
+                      ),
+                    ],
+                  ),
           ),
           SizedBox(
             height: 20,

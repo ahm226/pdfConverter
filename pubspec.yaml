@@ -44,10 +44,10 @@ dependencies:
   image_cropper: ^4.0.1
   firebase_core:
   top_snackbar_flutter: ^1.1.1
+  device_info_plus: ^9.0.3
   provider:
   url_launcher: ^6.1.11
   permission_handler: ^10.4.3
-#  google_fonts:
   share_plus:
 
 dev_dependencies:
@@ -87,17 +87,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/DMSans.ttf
+        
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins.ttf
+        
+        
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

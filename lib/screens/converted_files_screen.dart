@@ -71,7 +71,6 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
           style: TextStyle(
             fontFamily: "DM Sans",
             color: Color(0xFF000000),
-            fontWeight: FontWeight.bold,
           ),
         ),
         elevation: 0,
@@ -89,119 +88,112 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                 padding: const EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 550,
-                      child: StatefulBuilder(
-                        builder: ((context, setState) {
-                          return file.isEmpty
-                              ? Center(
-                                  child: Text(
-                                    "No Converted PDFs Available",
-                                    style: TextStyle(
-                                      fontFamily: "DM Sans",
-                                      fontSize: 18,
-                                    ),
+                    StatefulBuilder(
+                      builder: ((context, setState) {
+                        return file.isEmpty
+                            ? Center(
+                                child: Text(
+                                  "No Converted PDFs Available",
+                                  style: TextStyle(
+                                    fontFamily: "DM Sans",
+                                    fontSize: 18,
                                   ),
-                                )
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: file.length,
-                                  itemBuilder: (context, int index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 0.0, horizontal: 5.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          print(file[index].path);
-                                          viewConvertedFiles(file[index].path);
-                                        },
-                                        child: Card(
-                                          shape:
-                                              Border.all(color: Colors.white70),
-                                          elevation: 8,
-                                          shadowColor: Colors.white60,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: Container(
-                                              height: 70,
-                                              color: Colors.white,
-                                              child: Row(
-                                                children: [
-                                                  const SizedBox(
-                                                    width: 59,
-                                                    height: 70,
-                                                    child: Icon(
-                                                      Icons
-                                                          .picture_as_pdf_rounded,
-                                                      color: Color(0xFFFF0000),
-                                                      size: 45,
-                                                    ),
+                                ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: file.length,
+                                itemBuilder: (context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 0.0, horizontal: 5.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        print(file[index].path);
+                                        viewConvertedFiles(file[index].path);
+                                      },
+                                      child: Card(
+                                        shape:
+                                            Border.all(color: Colors.white70),
+                                        elevation: 8,
+                                        shadowColor: Colors.white60,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Container(
+                                            height: 70,
+                                            color: Colors.white,
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 59,
+                                                  height: 70,
+                                                  child: Icon(
+                                                    Icons
+                                                        .picture_as_pdf_rounded,
+                                                    color: Color(0xFFFF0000),
+                                                    size: 45,
                                                   ),
-                                                  const SizedBox(width: 10),
-                                                  Expanded(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          file[index]
-                                                              .path
-                                                              .toString()
-                                                              .split("/")
-                                                              .last,
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "DM Sans",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        file[index]
+                                                            .path
+                                                            .toString()
+                                                            .split("/")
+                                                            .last,
+                                                        style: TextStyle(
+                                                          fontFamily: "DM Sans",
                                                         ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  IconButton(
-                                                    onPressed: () async {
-                                                      Share.shareFiles([
-                                                        '${file[index].path}'
-                                                      ],
-                                                          text: file[index]
-                                                              .path
-                                                              .toString()
-                                                              .split("/")
-                                                              .last);
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.share,
-                                                      color: Color(0xFF0A9C19),
-                                                    ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    Share.shareFiles(
+                                                        ['${file[index].path}'],
+                                                        text: file[index]
+                                                            .path
+                                                            .toString()
+                                                            .split("/")
+                                                            .last);
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.share,
+                                                    color: Color(0xFF0A9C19),
                                                   ),
-                                                  IconButton(
-                                                    onPressed: () async {
-                                                      await deleteConvertedFileDailog(
-                                                          context,
-                                                          file[index].path,
-                                                          index);
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.delete,
-                                                      color: Color(0xFFD50000),
-                                                    ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    await deleteConvertedFileDailog(
+                                                        context,
+                                                        file[index].path,
+                                                        index);
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.delete,
+                                                    color: Color(0xFFD50000),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  });
-                        }),
-                      ),
+                                    ),
+                                  );
+                                });
+                      }),
                     ),
                   ],
                 ),
