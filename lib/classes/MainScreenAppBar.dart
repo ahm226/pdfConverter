@@ -19,7 +19,7 @@ class MainScreenAppBarClass {
               size: 30,
               color: Colors.white,
             ),
-            onPressed: () {
+            onPressed: () async {
               Scaffold.of(context).openDrawer();
             },
           );

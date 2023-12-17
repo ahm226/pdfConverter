@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 final pdfImagelimit = ValueNotifier(0);
@@ -12,28 +12,44 @@ final RxList compressedFiles = [].obs;
 RxInt randomNumber = 0.obs;
 List<dynamic> files = [];
 
-final String folername = "ImagetoPDF";
+String folername = "ImagetoPDF";
 String folername1 = "compressedImages";
-
 Future<bool> checkPermission(BuildContext context) async {
+  final plugin = DeviceInfoPlugin();
+  final android = await plugin.androidInfo;
+
   Map<Permission, PermissionStatus> statues = await [
     Permission.camera,
     Permission.storage,
+    Permission.photos,
   ].request();
+  print(statues);
   PermissionStatus? statusCamera = statues[Permission.camera];
-  PermissionStatus? statusStorage = statues[Permission.storage];
+  PermissionStatus? statusPhotos = android.version.sdkInt < 33
+      ? PermissionStatus.granted
+      : statues[Permission.photos];
+  PermissionStatus? statusStorage = android.version.sdkInt < 33
+      ? statues[Permission.storage]
+      : PermissionStatus.granted;
+  // PermissionStatus? statusExternalStorage =
+  //     statues[Permission.manageExternalStorage];
   bool isGranted = statusCamera == PermissionStatus.granted &&
-      statusStorage == PermissionStatus.granted;
+      statusStorage == PermissionStatus.granted &&
+      statusPhotos == PermissionStatus.granted;
+  // &&
+  // statusExternalStorage == PermissionStatus.granted;
   if (isGranted) {
     permit.value = true;
-    print("aaa");
-    createFolder(folername);
-    createFolder(folername1);
+    await createFolder(folername);
+    await createFolder(folername1);
     return true;
   }
   bool isPermanentlyDenied =
       statusCamera == PermissionStatus.permanentlyDenied ||
-          statusStorage == PermissionStatus.permanentlyDenied;
+          statusStorage == PermissionStatus.permanentlyDenied ||
+          statusPhotos == PermissionStatus.permanentlyDenied;
+  // ||
+  // statusExternalStorage == PermissionStatus.permanentlyDenied;
   if (isPermanentlyDenied) {
     await openAppSettings();
     print("bbb");
@@ -41,23 +57,19 @@ Future<bool> checkPermission(BuildContext context) async {
     return false;
     //_showSettingsDialog(context);
   }
-  permit.value = false;
   return false;
 }
 
 Future<String> createFolder(String name) async {
-  Directory? directory = Platform.isAndroid
-      ? await getExternalStorageDirectory()
-      : await getApplicationSupportDirectory();
+  // Directory? directory = Platform.isAndroid
+  //     ? await getExternalStorageDirectory()
+  //     : await getApplicationSupportDirectory();
   final subdir = Directory("/storage/emulated/0/Download/$name");
-  var status = await Permission.storage.status;
-  if (!status.isGranted) {
-    await Permission.storage.request();
-  }
-  if ((await subdir.exists())) {
+
+  if (await subdir.exists()) {
     return subdir.path;
   } else {
-    subdir.create();
+    await subdir.create();
     return subdir.path;
   }
 }

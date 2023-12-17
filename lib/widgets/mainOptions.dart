@@ -34,6 +34,7 @@ Widget mainOptionsTop(
       margin: EdgeInsets.only(
         right: 20,
         left: 20,
+        bottom: 23,
       ),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
@@ -49,7 +50,7 @@ Widget mainOptionsTop(
                 Text(
                   title1,
                   style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                       fontFamily: "Poppins"),
@@ -60,8 +61,12 @@ Widget mainOptionsTop(
                 Row(
                   children: [
                     Container(
-                      width: 45,
-                      height: 45,
+                      constraints: BoxConstraints(
+                        maxHeight: 45,
+                        maxWidth: 45,
+                        minHeight: 37,
+                        minWidth: 37,
+                      ),
                       decoration: BoxDecoration(
                         color: Color(0xFF1C2978),
                         borderRadius: BorderRadius.circular(50),
@@ -77,8 +82,12 @@ Widget mainOptionsTop(
                       ),
                     ),
                     Container(
-                      width: 45,
-                      height: 45,
+                      constraints: BoxConstraints(
+                        maxHeight: 45,
+                        maxWidth: 45,
+                        minHeight: 37,
+                        minWidth: 37,
+                      ),
                       decoration: BoxDecoration(
                         color: Color(0xFF1C2978),
                         borderRadius: BorderRadius.circular(50),
@@ -91,9 +100,7 @@ Widget mainOptionsTop(
                 ),
               ],
             ),
-            SizedBox(
-              width: 40,
-            ),
+            Spacer(),
             Container(
               padding:
                   EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
@@ -105,7 +112,7 @@ Widget mainOptionsTop(
               child: Text(
                 title2,
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                   fontFamily: "Poppins",
@@ -148,10 +155,10 @@ Widget mainOptionsBottom(
     child: Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
       constraints: BoxConstraints(
-        minHeight: 130,
+        minHeight: 135,
         maxHeight: 150,
         maxWidth: 150,
-        minWidth: 150,
+        minWidth: 135,
       ),
       child: Card(
         elevation: 15,
@@ -172,7 +179,7 @@ Widget mainOptionsBottom(
               title,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w500,
                 fontFamily: "Poppins",
               ),
@@ -216,6 +223,7 @@ Widget mainOptionsTopForTabs(
       margin: EdgeInsets.only(
         right: 45,
         left: 45,
+        bottom: 45,
       ),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
@@ -273,9 +281,7 @@ Widget mainOptionsTopForTabs(
                 ),
               ],
             ),
-            SizedBox(
-              width: 80,
-            ),
+            Spacer(),
             Container(
               padding:
                   EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
