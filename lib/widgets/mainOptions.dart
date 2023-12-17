@@ -46,11 +46,11 @@ Widget mainOptionsTop(
         child: Row(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title1,
                   style: TextStyle(
-                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                       fontFamily: "Poppins"),
@@ -68,7 +68,7 @@ Widget mainOptionsTop(
                         minWidth: 37,
                       ),
                       decoration: BoxDecoration(
-                        color: Color(0xFF1C2978),
+                        color: Color(0xff1C2978),
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: Image(
@@ -89,7 +89,7 @@ Widget mainOptionsTop(
                         minWidth: 37,
                       ),
                       decoration: BoxDecoration(
-                        color: Color(0xFF1C2978),
+                        color: Color(0xff1C2978),
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: Image(
@@ -111,8 +111,8 @@ Widget mainOptionsTop(
               ),
               child: Text(
                 title2,
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 15,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                   fontFamily: "Poppins",
@@ -235,6 +235,7 @@ Widget mainOptionsTopForTabs(
         child: Row(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title1,

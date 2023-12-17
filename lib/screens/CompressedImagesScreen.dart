@@ -30,7 +30,7 @@ class _CompressedImagesState extends State<CompressedImages> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "Compressed Images",
+          "Compressed Images".tr,
           style: TextStyle(
             color: Colors.black,
             fontFamily: "DM Sans",
@@ -53,9 +53,9 @@ class _CompressedImagesState extends State<CompressedImages> {
               StatefulBuilder(
                 builder: ((context, setState) {
                   return compressedFiles.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
-                            "No Compressed Image Available",
+                            "No Compressed Image Available".tr,
                             style: TextStyle(
                               fontSize: 18,
                               fontFamily: "DM Sans",
@@ -82,11 +82,12 @@ class _CompressedImagesState extends State<CompressedImages> {
                                   //    viewConvertedFiles(compressedFiles[index].path);
                                 },
                                 child: Card(
-                                  shape: Border.all(color: Colors.white70),
-                                  elevation: 8,
-                                  shadowColor: Colors.white60,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  elevation: 7,
+                                  shadowColor: Colors.white70,
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(12),
                                     child: Container(
                                       height: 70,
                                       color: Colors.white,
@@ -159,8 +160,10 @@ class _CompressedImagesState extends State<CompressedImages> {
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) {
-                                                    return CustomDialog(context,
-                                                        "Images saved Successfully in 'compressedImages' in downloads");
+                                                    return CustomDialog(
+                                                        context,
+                                                        'Images saved Successfully in "compressedImages" in downloads'
+                                                            .tr);
                                                   });
                                               compressedFiles.clear();
                                             },

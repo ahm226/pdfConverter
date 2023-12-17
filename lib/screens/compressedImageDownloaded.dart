@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -64,7 +65,7 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "Compressed Images",
+          "Compressed Images".tr,
           style: TextStyle(
             color: Colors.black,
             fontFamily: "DM Sans",
@@ -85,9 +86,9 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                     StatefulBuilder(
                       builder: ((context, setState) {
                         return file.isEmpty
-                            ? const Center(
+                            ? Center(
                                 child: Text(
-                                  "No Compressed Images Available",
+                                  "No Compressed Image Available".tr,
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
@@ -113,13 +114,14 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                                         viewConvertedFiles(file[index].path);
                                       },
                                       child: Card(
-                                        shape:
-                                            Border.all(color: Colors.white70),
-                                        elevation: 8,
-                                        shadowColor: Colors.white60,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12)),
+                                        elevation: 7,
+                                        shadowColor: Colors.white70,
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(5),
+                                              BorderRadius.circular(12),
                                           child: Container(
                                             height: 70,
                                             color: Colors.white,
@@ -186,7 +188,7 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                                                   },
                                                   icon: const Icon(
                                                     Icons.delete,
-                                                    color: Color(0xFFD50000),
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ],
@@ -216,8 +218,8 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          title: const Text(
-            "Do you want to delete this Image?",
+          title: Text(
+            "Do you want to delete this Image?".tr,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontFamily: "DM Sans",
@@ -235,12 +237,12 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              color: Color.fromARGB(255, 226, 51, 51),
+              color: Colors.black,
               textColor: Colors.white,
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("NO",
+              child: Text("NO".tr,
                   style: TextStyle(
                     fontFamily: "DM Sans",
                   )),
@@ -259,8 +261,8 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                 await deletefile.delete();
                 setState(() {});
               },
-              child: const Text(
-                "YES",
+              child: Text(
+                "YES".tr,
               ),
             ),
           ],

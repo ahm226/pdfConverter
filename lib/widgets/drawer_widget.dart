@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:imagetopdfconverter/classes/languageDialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-Widget drawerWidget() {
+Widget drawerWidget(BuildContext context) {
   return Drawer(
     backgroundColor: Colors.white,
     elevation: 10,
@@ -30,11 +32,26 @@ Widget drawerWidget() {
           ),
           ListTile(
               leading: Icon(
+                Icons.language,
+                color: Colors.black,
+              ),
+              title: Text(
+                "Change Language".tr,
+                style: TextStyle(
+                  fontFamily: "DM Sans",
+                  color: Colors.black,
+                ),
+              ),
+              onTap: () {
+                LanguageChangeDialog.buildDialog(context);
+              }),
+          ListTile(
+              leading: Icon(
                 Icons.privacy_tip_outlined,
                 color: Colors.black,
               ),
               title: Text(
-                "Privacy Policy",
+                "Privacy Policy".tr,
                 style: TextStyle(
                   fontFamily: "DM Sans",
                   color: Colors.black,
@@ -64,7 +81,7 @@ Widget drawerWidget() {
                 color: Colors.black,
               ),
               title: Text(
-                "Share",
+                "Share".tr,
                 style: TextStyle(
                   fontFamily: "DM Sans",
                   color: Colors.black,

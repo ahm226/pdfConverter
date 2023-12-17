@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 Widget CustomDialog(BuildContext context, String title) {
   return AlertDialog(
@@ -13,17 +14,22 @@ Widget CustomDialog(BuildContext context, String title) {
       ),
     ),
     actions: [
-      MaterialButton(
-        color: Color(0xFF1C2978),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        child: Text(
-          "OK",
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: "DM Sans",
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: MaterialButton(
+          minWidth: MediaQuery.of(context).size.width * 0.5,
+          color: Color(0xFF1C2978),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            "OK".tr,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: "DM Sans",
+            ),
           ),
         ),
       )

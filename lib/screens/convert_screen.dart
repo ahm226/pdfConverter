@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:imagetopdfconverter/classes/customDialog.dart';
@@ -66,8 +67,8 @@ class _ConvertScreenState extends State<ConvertScreen> {
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: const Text(
-          "Select Images from",
+        title: Text(
+          "Select Images from".tr,
           style: TextStyle(
             color: Colors.black,
             fontFamily: "DM Sans",
@@ -75,50 +76,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
         ),
         elevation: 0,
         leading: const BackButton(
-          color: Color(0xFF000000),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.only(left: 50, right: 50, bottom: 5),
-        constraints: BoxConstraints(
-          minWidth: MediaQuery.of(context).size.width * 0.5,
-          minHeight: MediaQuery.of(context).size.height * 0.065,
-        ),
-        child: ElevatedButton(
-          onPressed: () {
-            if (files.isEmpty) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CustomDialog(
-                        context, "No image selected, kindly choose images");
-                  });
-            } else {
-              Random random = Random();
-              randomNumber.value = random.nextInt(100000000);
-              _userfilename.text =
-                  "imagetopdf_" + randomNumber.value.toString();
-              fileNameDailog(context, files, status);
-              setState(() {});
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            backgroundColor: const Color.fromARGB(255, 226, 51, 51),
-            shadowColor: const Color(0xFFD50000),
-          ),
-          child: Text(
-            "Convert",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: "DM Sans",
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 22,
-            ),
-          ),
+          color: Colors.black,
         ),
       ),
       body: Column(
@@ -130,19 +88,18 @@ class _ConvertScreenState extends State<ConvertScreen> {
               children: [
                 Container(
                   constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width * 0.4,
-                    minHeight: MediaQuery.of(context).size.height * 0.075,
+                    minWidth: MediaQuery.of(context).size.width * 0.2,
+                    minHeight: MediaQuery.of(context).size.height * 0.060,
                   ),
                   child: ElevatedButton.icon(
                     icon: const Icon(
                       Icons.camera_alt,
                       size: 22,
                     ),
-                    label: const Text(
-                      "Camera",
+                    label: Text(
+                      "Camera".tr,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18,
                         fontFamily: "DM Sans",
                       ),
                     ),
@@ -150,9 +107,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      backgroundColor: Color(0xff1C2978),
-                      shadowColor: Colors.white38,
-                      elevation: 10,
+                      backgroundColor: Colors.black,
                     ),
                     onPressed: () async {
                       permit.value
@@ -163,19 +118,18 @@ class _ConvertScreenState extends State<ConvertScreen> {
                 ),
                 Container(
                   constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width * 0.4,
-                    minHeight: MediaQuery.of(context).size.height * 0.075,
+                    minWidth: MediaQuery.of(context).size.width * 0.2,
+                    minHeight: MediaQuery.of(context).size.height * 0.060,
                   ),
                   child: ElevatedButton.icon(
                     icon: const Icon(
                       Icons.sd_storage_sharp,
                       size: 22,
                     ),
-                    label: const Text(
-                      "Storage",
+                    label: Text(
+                      "Storage".tr,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18,
                         fontFamily: "DM Sans",
                       ),
                     ),
@@ -183,9 +137,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      backgroundColor: Color(0xff1C2978),
-                      shadowColor: Colors.white38,
-                      elevation: 10,
+                      backgroundColor: Colors.black,
                     ),
                     onPressed: () {
                       print(permit.value);
@@ -193,6 +145,46 @@ class _ConvertScreenState extends State<ConvertScreen> {
                           ? getImagesFromStorage("gallery")
                           : checkPermission(context);
                     },
+                  ),
+                ),
+                Container(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width * 0.2,
+                    minHeight: MediaQuery.of(context).size.height * 0.060,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (files.isEmpty) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog(context,
+                                  "No image selected, kindly choose images".tr);
+                            });
+                      } else {
+                        Random random = Random();
+                        randomNumber.value = random.nextInt(100000000);
+                        _userfilename.text =
+                            "imagetopdf_" + randomNumber.value.toString();
+                        fileNameDailog(context, files, status);
+                        setState(() {});
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(17),
+                      ),
+                      backgroundColor: Color(0xff1C2978),
+                    ),
+                    child: Text(
+                      "Done".tr,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "DM Sans",
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -220,94 +212,65 @@ class _ConvertScreenState extends State<ConvertScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: files.isNotEmpty
-                  ? ListView.builder(
+                  ? GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 7.0,
+                        crossAxisSpacing: 7.0,
+                      ),
                       shrinkWrap: true,
                       itemCount: files.length,
-                      itemBuilder: (context, index) {
+                      itemBuilder: (BuildContext ctx, index) {
                         final file = files[index];
-                        List<String> nameAndExtension =
-                            file.path.split("/").last.split('.');
-                        String fileNameWithoutExtension = nameAndExtension[0];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 0.0, horizontal: 5.0),
-                          child: InkWell(
-                            onTap: () => viewFile(file),
-                            child: Card(
-                              shape: Border.all(color: Colors.white70),
-                              shadowColor: Colors.white60,
-                              elevation: 8,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Container(
-                                  height: 70,
-                                  color: Colors.white,
-                                  child: Row(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 59,
-                                        height: 70,
-                                        child: Image.file(
-                                          File(file.path.toString()),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              fileNameWithoutExtension,
-                                              // file.path.split("/").last,
-                                              maxLines: 1,
-                                              style: const TextStyle(
-                                                fontFamily: "DM Sans",
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              file.path
-                                                  .toString()
-                                                  .split(".")
-                                                  .last,
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            pdfImagelimit.value--;
-                                            files.remove(file);
-                                          });
-                                        },
-                                        icon: const Icon(
-                                          Icons.cancel,
-                                          color: const Color(0xFFD50000),
-                                        ),
-                                      ),
-                                    ],
+                        return Stack(
+                          fit: StackFit.passthrough,
+                          children: [
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: InkWell(
+                                onTap: () {
+                                  viewFile(file);
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    File(file.path.toString()),
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    pdfImagelimit.value--;
+                                    files.remove(file);
+                                  });
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 5, top: 5),
+                                  width: 18,
+                                  height: 18,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Color.fromARGB(255, 0, 0, 0)),
+                                  child: Icon(
+                                    Icons.close,
+                                    size: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         );
-                      },
-                    )
+                      })
                   : Center(
                       child: Text(
-                        "No image selected",
+                        "No image selected".tr,
                         style: TextStyle(
                           fontFamily: "DM Sans",
                           color: Colors.black,
@@ -337,7 +300,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
             : showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return CustomDialog(context, "limit exceeded");
+                  return CustomDialog(context, "limit exceeded".tr);
                 });
       } else {
         pdfImagelimit.value < 100
@@ -370,13 +333,13 @@ class _ConvertScreenState extends State<ConvertScreen> {
           ],
           uiSettings: [
             AndroidUiSettings(
-                toolbarTitle: 'Crop Image',
+                toolbarTitle: 'Crop Image'.tr,
                 toolbarColor: Color(0xFF0336ff),
                 toolbarWidgetColor: Colors.white,
                 initAspectRatio: CropAspectRatioPreset.original,
                 lockAspectRatio: false),
             IOSUiSettings(
-              title: 'Crop Image',
+              title: 'Crop Image'.tr,
             ),
             WebUiSettings(
               context: context,
@@ -396,7 +359,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
               : showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return CustomDialog(context, "limit exceeded");
+                    return CustomDialog(context, "limit exceeded".tr);
                   });
         } else {
           // files.add(result.path.map((e) => File(e!)).toList());
@@ -410,7 +373,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
               : showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return CustomDialog(context, "limit exceeded");
+                    return CustomDialog(context, "limit exceeded".tr);
                   });
         }
       }
@@ -442,10 +405,10 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         child: TextFormField(
                           controller: _userfilename,
                           validator: (val) =>
-                              val!.isEmpty ? "enter a valid name" : null,
+                              val!.isEmpty ? "enter a valid name".tr : null,
                           decoration: InputDecoration(
                             label: Text(
-                              "File name",
+                              "File name".tr,
                               style: TextStyle(
                                 fontFamily: "DM Sans",
                                 color: Colors.black,
@@ -489,7 +452,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Page size",
+                            "Page Size".tr,
                             style: TextStyle(
                               fontFamily: "DM Sans",
                               fontWeight: FontWeight.w600,
@@ -530,7 +493,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Orientation",
+                            "Orientation".tr,
                             style: TextStyle(
                               fontFamily: "DM Sans",
                               fontWeight: FontWeight.w600,
@@ -573,52 +536,62 @@ class _ConvertScreenState extends State<ConvertScreen> {
                 ),
               ),
               actions: [
-                MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  color: const Color.fromARGB(255, 226, 51, 51),
-                  textColor: Colors.white,
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                      fontFamily: "DM Sans",
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Text("Done",
-                      style: TextStyle(
-                        fontFamily: "DM Sans",
-                      )),
-                  textColor: Colors.white,
-                  color: Color(0xFF1C2978),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      pdf = pw.Document();
-                      createPDF(files);
-                      await savePDF(_userfilename.text, files);
-
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const ConvertedFilesScreen(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    children: [
+                      MaterialButton(
+                        minWidth: MediaQuery.of(context).size.width * 0.4,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        color: Colors.black,
+                        textColor: Colors.white,
+                        child: Text(
+                          "Cancel".tr,
+                          style: TextStyle(
+                            fontFamily: "DM Sans",
+                          ),
                         ),
-                      );
-                      _userfilename.clear();
-                      files.clear();
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CustomDialog(
-                                context, "File converted Successfully");
-                          });
-                    }
-                  },
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      MaterialButton(
+                        minWidth: MediaQuery.of(context).size.width * 0.4,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Text("Convert".tr,
+                            style: TextStyle(
+                              fontFamily: "DM Sans",
+                            )),
+                        textColor: Colors.white,
+                        color: Color(0xFF1C2978),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            pdf = pw.Document();
+                            createPDF(files);
+                            await savePDF(_userfilename.text, files);
+
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ConvertedFilesScreen(),
+                              ),
+                            );
+                            _userfilename.clear();
+                            files.clear();
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CustomDialog(context,
+                                      "File converted Successfully".tr);
+                                });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             );

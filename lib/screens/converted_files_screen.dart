@@ -70,10 +70,10 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "Converted Images",
+          "Converted Images".tr,
           style: TextStyle(
             fontFamily: "DM Sans",
-            color: Color(0xFF000000),
+            color: Colors.black,
           ),
         ),
         elevation: 0,
@@ -96,7 +96,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                         return file.isEmpty
                             ? Center(
                                 child: Text(
-                                  "No Converted PDFs Available",
+                                  "No Converted PDFs Available".tr,
                                   style: TextStyle(
                                     fontFamily: "DM Sans",
                                     fontSize: 18,
@@ -116,80 +116,76 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                                         viewConvertedFiles(file[index].path);
                                       },
                                       child: Card(
-                                        shape:
-                                            Border.all(color: Colors.white70),
-                                        elevation: 8,
-                                        shadowColor: Colors.white60,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: Container(
-                                            height: 70,
-                                            color: Colors.white,
-                                            child: Row(
-                                              children: [
-                                                const SizedBox(
-                                                  width: 59,
-                                                  height: 70,
-                                                  child: Icon(
-                                                    Icons
-                                                        .picture_as_pdf_rounded,
-                                                    color: Color(0xFFFF0000),
-                                                    size: 45,
-                                                  ),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12)),
+                                        elevation: 7,
+                                        shadowColor: Colors.white70,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
+                                          height: 70,
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(
+                                                width: 59,
+                                                height: 70,
+                                                child: Icon(
+                                                  Icons.picture_as_pdf_rounded,
+                                                  color: Color(0xFFFF0000),
+                                                  size: 45,
                                                 ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        file[index]
-                                                            .path
-                                                            .toString()
-                                                            .split("/")
-                                                            .last,
-                                                        style: TextStyle(
-                                                          fontFamily: "DM Sans",
-                                                        ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      file[index]
+                                                          .path
+                                                          .toString()
+                                                          .split("/")
+                                                          .last,
+                                                      style: TextStyle(
+                                                        fontFamily: "DM Sans",
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                IconButton(
-                                                  onPressed: () async {
-                                                    Share.shareFiles(
-                                                        ['${file[index].path}'],
-                                                        text: file[index]
-                                                            .path
-                                                            .toString()
-                                                            .split("/")
-                                                            .last);
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.share,
-                                                    color: Color(0xFF0A9C19),
-                                                  ),
+                                              ),
+                                              IconButton(
+                                                onPressed: () async {
+                                                  Share.shareFiles(
+                                                      ['${file[index].path}'],
+                                                      text: file[index]
+                                                          .path
+                                                          .toString()
+                                                          .split("/")
+                                                          .last);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.share,
+                                                  color: Color(0xFF0A9C19),
                                                 ),
-                                                IconButton(
-                                                  onPressed: () async {
-                                                    await deleteConvertedFileDailog(
-                                                        context,
-                                                        file[index].path,
-                                                        index);
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.delete,
-                                                    color: Color(0xFFD50000),
-                                                  ),
+                                              ),
+                                              IconButton(
+                                                onPressed: () async {
+                                                  await deleteConvertedFileDailog(
+                                                      context,
+                                                      file[index].path,
+                                                      index);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.black,
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -216,7 +212,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           title: Text(
-            "Do you want to delete this file?",
+            "Do you want to delete this file?".tr,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontFamily: "DM Sans",
@@ -234,13 +230,13 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              color: Color.fromARGB(255, 226, 51, 51),
+              color: Colors.black,
               textColor: Colors.white,
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: Text(
-                "NO",
+                "NO".tr,
                 style: TextStyle(
                   fontFamily: "DM Sans",
                 ),
@@ -261,7 +257,7 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                 setState(() {});
               },
               child: Text(
-                "YES",
+                "YES".tr,
                 style: TextStyle(
                   fontFamily: "DM Sans",
                 ),
