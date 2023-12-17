@@ -50,7 +50,7 @@ dependencies:
   permission_handler: ^10.4.3
   share_plus:
   shared_preferences:
-  
+  google_mobile_ads: ^4.0.0
 
 dev_dependencies:
   flutter_test:

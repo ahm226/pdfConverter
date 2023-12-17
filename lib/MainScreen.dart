@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:imagetopdfconverter/classes/MainScreenAppBar.dart';
 import 'package:imagetopdfconverter/classes/languageDialog.dart';
 import 'package:imagetopdfconverter/widgets/drawer_widget.dart';
 import 'package:imagetopdfconverter/widgets/mainOptions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -19,6 +17,67 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   Widget? selectedOption;
   String? selectedCard;
+
+  late final InterstitialAd interstitialAd;
+  final String interstitialAdUnitId =
+      "ca-app-pub-3940256099942544/1033173712"; //sample ad unit id
+
+  //load ads
+  @override
+  void initState() {
+    super.initState();
+
+    //load ad here...
+    _loadInterstitialAd();
+  }
+
+  //method to load an ad
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback:
+          InterstitialAdLoadCallback(onAdLoaded: (InterstitialAd ad) {
+        //keep a reference to the ad as you can show it later
+        interstitialAd = ad;
+
+        //set on full screen content call back
+        _setFullScreenContentCallback();
+      }, onAdFailedToLoad: (LoadAdError loadAdError) {
+        //ad failed to load
+        print("Interstitial ad failed to load: $loadAdError");
+      }),
+    );
+  }
+
+  //method to set show content call back
+  void _setFullScreenContentCallback() {
+    interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (InterstitialAd ad) =>
+          print("$ad onAdShowedFullScreenContent"),
+      onAdDismissedFullScreenContent: (InterstitialAd ad) {
+        print("$ad onAdDismissedFullScreenContent");
+
+        //dispose the dismissed ad
+        ad.dispose();
+      },
+      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+        print("$ad  onAdFailedToShowFullScreenContent: $error ");
+        //dispose the failed ad
+        ad.dispose();
+      },
+      onAdImpression: (InterstitialAd ad) => print("$ad Impression occured"),
+    );
+  }
+
+  //show ad method
+  void _showInterstitialAd() {
+    if (interstitialAd == null) {
+      print("Ad not ready!");
+      return;
+    }
+    interstitialAd.show();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +207,7 @@ class _MainScreenState extends State<MainScreen> {
               backgroundColor: Colors.black,
             ),
             onPressed: () {
+              _showInterstitialAd();
               LanguageChangeDialog.buildDialog(context);
             },
           ),
