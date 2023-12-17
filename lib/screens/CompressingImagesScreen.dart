@@ -104,7 +104,7 @@ class _CompressImagesScreenState extends State<CompressImagesScreen> {
             } else {
               await compress();
               setState(() {});
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => const CompressedImages(),
                 ),

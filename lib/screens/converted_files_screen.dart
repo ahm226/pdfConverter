@@ -46,8 +46,11 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
         : await getApplicationSupportDirectory();
 
     directory = (directory1!).path;
+    print("directory");
+    print(directory);
     final subdir =
         await Directory('/storage/emulated/0/Download/$folername').path;
+    print(subdir);
     setState(
       () {
         file = io.Directory("$subdir/").listSync();
@@ -253,9 +256,9 @@ class _ConvertedFilesScreenState extends State<ConvertedFilesScreen> {
                 setState(() {
                   file.removeAt(index);
                 });
+                Navigator.of(context).pop();
                 await deletefile.delete();
                 setState(() {});
-                Navigator.of(context).pop(true);
               },
               child: Text(
                 "YES",

@@ -48,8 +48,8 @@ android {
         applicationId "com.imagetopdfconverter.app"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 2
+        versionName "2.0"
         multiDexEnabled true
     }
     subprojects {
@@ -62,11 +62,19 @@ android {
             }
         }
     }
+    signingConfigs {
+        release {
+            storeFile file('C:\\projects\\imagetopdfconverter\\keystore.jks')
+            storePassword 'pdf.12345'
+            keyAlias 'key'
+            keyPassword 'pdf.12345'
+        }
+    }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }

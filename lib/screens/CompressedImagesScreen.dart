@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:imagetopdfconverter/classes/customDialog.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../MainScreen.dart';
@@ -164,6 +162,7 @@ class _CompressedImagesState extends State<CompressedImages> {
                                                     return CustomDialog(context,
                                                         "Images saved Successfully in 'compressedImages' in downloads");
                                                   });
+                                              compressedFiles.clear();
                                             },
                                             icon: const Icon(
                                               Icons.download,
@@ -189,28 +188,9 @@ class _CompressedImagesState extends State<CompressedImages> {
 
   saveCompressedImage(String userfilename) async {
     String filePath;
-    filePath = await createFolder(folername);
+    final subdir = Directory('/storage/emulated/0/Download/$folername');
+    filePath = subdir.path;
     filePath = filePath + "/" + userfilename.split('/').last;
     await File(userfilename).copy(filePath);
-  }
-
-  Future<String> createFolder(String name) async {
-    Directory? directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
-
-    final subdir = Directory('/storage/emulated/0/Download/$name');
-    //Directory((directory)!.path + '/$name');
-
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
-    if ((await subdir.exists())) {
-      return subdir.path;
-    } else {
-      subdir.create();
-      return subdir.path;
-    }
   }
 }

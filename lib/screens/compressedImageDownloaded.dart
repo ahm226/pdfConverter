@@ -255,9 +255,9 @@ class _ConvertedFilesScreenState extends State<CompressedDownloaded> {
                 setState(() {
                   file.removeAt(index);
                 });
+                Navigator.of(context).pop();
                 await deletefile.delete();
                 setState(() {});
-                Navigator.of(context).pop(true);
               },
               child: const Text(
                 "YES",

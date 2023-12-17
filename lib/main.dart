@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:imagetopdfconverter/MainScreen.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'classes/Helper.dart';
 
@@ -23,27 +21,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final String folername = "ImagetoPDF";
-  String folername1 = "compressedImages";
-  Future<String> createFolder(String name) async {
-    Directory? directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
-    final subdir = Directory("/storage/emulated/0/Download/$name");
-    if ((await subdir.exists())) {
-      return subdir.path;
-    } else {
-      subdir.create();
-      return subdir.path;
-    }
-  }
-
   getData() async {
     await checkPermission(context);
-    if (permit.value) {
-      createFolder(folername);
-      createFolder(folername1);
-    }
   }
 
   @override
@@ -54,6 +33,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Image to pdf: Image compressor',

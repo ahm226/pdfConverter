@@ -7,10 +7,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:imagetopdfconverter/classes/customDialog.dart';
 import 'package:open_file_plus/open_file_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:permission_handler/permission_handler.dart';
 
 import '../classes/Helper.dart';
 import 'converted_files_screen.dart';
@@ -671,33 +669,12 @@ class _ConvertScreenState extends State<ConvertScreen> {
   }
 
   savePDF(String userfilename, List<dynamic> files) async {
-    String filePath = await createFolder(folername);
-
+    String filePath = Directory('/storage/emulated/0/Download/$folername').path;
     try {
       final file = File('$filePath/$userfilename.pdf');
       await file.writeAsBytes(await pdf.save());
     } catch (e) {
       // showMessage('error', e.toString());
-    }
-  }
-
-  Future<String> createFolder(String name) async {
-    Directory? directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
-
-    final subdir = Directory('/storage/emulated/0/Download/$name');
-    //Directory((directory)!.path + '/$name');
-
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
-    if ((await subdir.exists())) {
-      return subdir.path;
-    } else {
-      subdir.create();
-      return subdir.path;
     }
   }
 
