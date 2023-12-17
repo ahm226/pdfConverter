@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:imagetopdfconverter/MainScreen.dart';
 
 class MainScreenAppBarClass {
   static getAppBar() {
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Color(0xFF428AE0),
+        statusBarColor: Color(0xff428AE0),
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
       ),
@@ -19,14 +21,14 @@ class MainScreenAppBarClass {
               size: 30,
               color: Colors.white,
             ),
-            onPressed: () {
+            onPressed: () async {
               Scaffold.of(context).openDrawer();
             },
           );
         },
       ),
       title: Text(
-        "Welcome !",
+        "Welcome".tr,
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:imagetopdfconverter/classes/customDialog.dart';
 import 'package:imagetopdfconverter/screens/CompressedImagesScreen.dart';
@@ -43,8 +44,7 @@ class _CompressImagesScreenState extends State<CompressImagesScreen> {
         : showDialog(
             context: context,
             builder: (BuildContext context) {
-              return CustomDialog(
-                  context, "limit exceeded , 10 images max allowed");
+              return CustomDialog(context, "limit exceeded".tr);
             });
 
     setState(() {
@@ -75,7 +75,7 @@ class _CompressImagesScreenState extends State<CompressImagesScreen> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "Compress Images",
+          "Compress Images".tr,
           style: TextStyle(
             color: Colors.black,
             fontFamily: "DM Sans",
@@ -83,79 +83,29 @@ class _CompressImagesScreenState extends State<CompressImagesScreen> {
         ),
         elevation: 0,
         leading: const BackButton(
-          color: Color(0xFF000000),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.only(left: 50, right: 50, bottom: 5),
-        constraints: BoxConstraints(
-          minWidth: MediaQuery.of(context).size.width * 0.2,
-          minHeight: MediaQuery.of(context).size.height * 0.075,
-        ),
-        child: ElevatedButton(
-          onPressed: () async {
-            if (_imageFiles.isEmpty) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CustomDialog(
-                        context, "No image selected, kindly choose images");
-                  });
-            } else {
-              await compress();
-              setState(() {});
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CompressedImages(),
-                ),
-              );
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CustomDialog(
-                        context, "Images Compressed Successfully ");
-                  });
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            backgroundColor: const Color.fromARGB(255, 226, 51, 51),
-            shadowColor: const Color(0xFFD50000),
-          ),
-          child: Text(
-            "Compress",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 22,
-              fontFamily: "DM Sans",
-              color: Colors.white,
-            ),
-          ),
+          color: Colors.black,
         ),
       ),
       body: Center(
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
                   constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width * 0.2,
-                    minHeight: MediaQuery.of(context).size.height * 0.075,
+                    minWidth: MediaQuery.of(context).size.width * 0.6,
+                    minHeight: MediaQuery.of(context).size.height * 0.060,
                   ),
                   child: ElevatedButton.icon(
                     icon: const Icon(
                       Icons.sd_storage_sharp,
-                      size: 20,
+                      size: 18,
                     ),
                     label: Text(
-                      "Select Images",
+                      "Select Images".tr,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
                         fontFamily: "DM Sans",
                       ),
                     ),
@@ -163,8 +113,7 @@ class _CompressImagesScreenState extends State<CompressImagesScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      backgroundColor: Color(0xFF1C2978),
-                      shadowColor: Colors.white,
+                      backgroundColor: Colors.black,
                       elevation: 4,
                     ),
                     onPressed: () async {
@@ -174,10 +123,56 @@ class _CompressImagesScreenState extends State<CompressImagesScreen> {
                     },
                   ),
                 ),
+                Container(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width * 0.2,
+                    minHeight: MediaQuery.of(context).size.height * 0.060,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_imageFiles.isEmpty) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog(context,
+                                  "No image selected, kindly choose images".tr);
+                            });
+                      } else {
+                        await compress();
+                        setState(() {});
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const CompressedImages(),
+                          ),
+                        );
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog(
+                                  context, "Images Compressed Successfully".tr);
+                            });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      backgroundColor: Color(0xFF1C2978),
+                    ),
+                    child: Text(
+                      "Compress".tr,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "DM Sans",
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 10, bottom: 8, top: 8),
+              padding: const EdgeInsets.only(right: 10, bottom: 8, top: 25),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -195,91 +190,72 @@ class _CompressImagesScreenState extends State<CompressImagesScreen> {
               height: 15,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: _imageFiles.length,
-                shrinkWrap: true,
-                itemBuilder: (c, i) {
-                  final kb =
-                      _imageFiles[i]!.readAsBytesSync().lengthInBytes / 1024;
-                  final mb = kb / 1024;
-                  final size = (mb >= 1)
-                      ? '${mb.toStringAsFixed(2)} MB'
-                      : '${kb.toStringAsFixed(2)} KB';
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0.0, horizontal: 5.0),
-                    child: InkWell(
-                      onTap: () => viewFile(_imageFiles[i]),
-                      child: Card(
-                        shape: Border.all(
-                          color: Colors.white70,
-                        ),
-                        shadowColor: Colors.white60,
-                        elevation: 8,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: Container(
-                            height: 70,
-                            color: Colors.white,
-                            child: Row(
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 59,
-                                  height: 70,
-                                  child: Image.file(
-                                    File(_imageFiles[i]!.path.toString()),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        _imageFiles[i]!.path.split("/").last,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: "DM Sans",
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        size,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      compressImagelimit.value--;
-                                      _imageFiles.remove(_imageFiles[i]);
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.cancel,
-                                  ),
-                                  color: const Color(0xFFD50000),
-                                ),
-                              ],
+                child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 7.0,
+                    crossAxisSpacing: 7.0,
+                  ),
+                  shrinkWrap: true,
+                  itemCount: _imageFiles.length,
+                  itemBuilder: (BuildContext ctx, index) {
+                    final kb =
+                        _imageFiles[index]!.readAsBytesSync().lengthInBytes /
+                            1024;
+                    final mb = kb / 1024;
+                    final size = (mb >= 1)
+                        ? '${mb.toStringAsFixed(2)} MB'
+                        : '${kb.toStringAsFixed(2)} KB';
+
+                    return Stack(
+                      fit: StackFit.passthrough,
+                      children: [
+                        Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: InkWell(
+                            onTap: () {
+                              viewFile(_imageFiles[index]);
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.file(
+                                File(_imageFiles[index]!.path.toString()),
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                compressImagelimit.value--;
+                                _imageFiles.remove(_imageFiles[index]);
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(right: 5, top: 5),
+                              width: 18,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color.fromARGB(255, 0, 0, 0)),
+                              child: Icon(
+                                Icons.close,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+            )),
           ],
         ),
       ),

@@ -1,49 +1,46 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:imagetopdfconverter/MainScreen.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:imagetopdfconverter/classes/localStrings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'classes/Helper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  final selectedLocale = await getSelectedLocale();
+
+  runApp(MyApp(selectedLocale: selectedLocale));
+}
+
+Future<Locale?> getSelectedLocale() async {
+  final preferences = await SharedPreferences.getInstance();
+  final localeString = preferences.getString('selected_locale');
+  if (localeString != null) {
+    final parts = localeString.split('_');
+    if (parts.length == 2) {
+      return Locale(parts[0], parts[1]);
+    }
+  }
+  return null;
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final Locale? selectedLocale;
+
+  const MyApp({Key? key, this.selectedLocale}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  final String folername = "ImagetoPDF";
-  String folername1 = "compressedImages";
-  Future<String> createFolder(String name) async {
-    Directory? directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
-    final subdir = Directory("/storage/emulated/0/Download/$name");
-    if ((await subdir.exists())) {
-      return subdir.path;
-    } else {
-      subdir.create();
-      return subdir.path;
-    }
-  }
-
   getData() async {
     await checkPermission(context);
-    if (permit.value) {
-      createFolder(folername);
-      createFolder(folername1);
-    }
   }
 
   @override
@@ -54,7 +51,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return GetMaterialApp(
+      translations: LocalString(),
+      locale: widget.selectedLocale ?? Locale('english', 'ln'),
       debugShowCheckedModeBanner: false,
       title: 'Image to pdf: Image compressor',
       theme: ThemeData(

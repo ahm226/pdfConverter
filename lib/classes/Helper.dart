@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 final pdfImagelimit = ValueNotifier(0);
@@ -15,7 +14,6 @@ List<dynamic> files = [];
 
 String folername = "ImagetoPDF";
 String folername1 = "compressedImages";
-
 Future<bool> checkPermission(BuildContext context) async {
   final plugin = DeviceInfoPlugin();
   final android = await plugin.androidInfo;
@@ -24,7 +22,6 @@ Future<bool> checkPermission(BuildContext context) async {
     Permission.camera,
     Permission.storage,
     Permission.photos,
-    // Permission.manageExternalStorage
   ].request();
   print(statues);
   PermissionStatus? statusCamera = statues[Permission.camera];
@@ -43,9 +40,8 @@ Future<bool> checkPermission(BuildContext context) async {
   // statusExternalStorage == PermissionStatus.granted;
   if (isGranted) {
     permit.value = true;
-    print("aaa");
-    createFolder(folername);
-    createFolder(folername1);
+    await createFolder(folername);
+    await createFolder(folername1);
     return true;
   }
   bool isPermanentlyDenied =
@@ -65,14 +61,15 @@ Future<bool> checkPermission(BuildContext context) async {
 }
 
 Future<String> createFolder(String name) async {
-  Directory? directory = Platform.isAndroid
-      ? await getExternalStorageDirectory()
-      : await getApplicationSupportDirectory();
+  // Directory? directory = Platform.isAndroid
+  //     ? await getExternalStorageDirectory()
+  //     : await getApplicationSupportDirectory();
   final subdir = Directory("/storage/emulated/0/Download/$name");
-  if ((await subdir.exists())) {
+
+  if (await subdir.exists()) {
     return subdir.path;
   } else {
-    subdir.create();
+    await subdir.create();
     return subdir.path;
   }
 }

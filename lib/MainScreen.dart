@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get_utils/get_utils.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:imagetopdfconverter/classes/MainScreenAppBar.dart';
+import 'package:imagetopdfconverter/classes/languageDialog.dart';
 import 'package:imagetopdfconverter/widgets/drawer_widget.dart';
 import 'package:imagetopdfconverter/widgets/mainOptions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -22,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      drawer: drawerWidget(),
+      drawer: drawerWidget(context),
       appBar: MainScreenAppBarClass.getAppBar(),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -40,16 +45,16 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       mainOptionsTop(
                         context,
-                        "Convert Image to PDF",
-                        "Use Now",
+                        "Convert Image to PDF".tr,
+                        "Use Now".tr,
                         const AssetImage("assets/gallery.png"),
                         const AssetImage("assets/pdficon.png"),
                         "1",
                       ),
                       mainOptionsTop(
                         context,
-                        "Compress Images",
-                        "Use Now",
+                        "Compress Images".tr,
+                        "Use Now".tr,
                         const AssetImage("assets/gallery.png"),
                         const AssetImage("assets/compressicon.png"),
                         "2",
@@ -60,16 +65,16 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       mainOptionsTopForTabs(
                         context,
-                        "Convert Image to PDF",
-                        "Use Now",
+                        "Convert Image to PDF".tr,
+                        "Use Now".tr,
                         const AssetImage("assets/gallery.png"),
                         const AssetImage("assets/pdficon.png"),
                         "1",
                       ),
                       mainOptionsTopForTabs(
                         context,
-                        "Compress Images",
-                        "Use Now",
+                        "Compress Images".tr,
+                        "Use Now".tr,
                         const AssetImage("assets/gallery.png"),
                         const AssetImage("assets/compressicon.png"),
                         "2",
@@ -86,7 +91,7 @@ class _MainScreenState extends State<MainScreen> {
                   children: [
                     mainOptionsBottom(
                       context,
-                      "PDF Images",
+                      "PDF Images".tr,
                       const AssetImage("assets/pdfcompletedicon.png"),
                       "3",
                     ),
@@ -95,7 +100,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     mainOptionsBottom(
                       context,
-                      "Compressed Images",
+                      "Compressed Images".tr,
                       const AssetImage("assets/compressImagescompleteIcon.png"),
                       "4",
                     ),
@@ -106,7 +111,7 @@ class _MainScreenState extends State<MainScreen> {
                   children: [
                     mainOptionsBottomForTabs(
                       context,
-                      "PDF Images",
+                      "PDF Images".tr,
                       const AssetImage("assets/pdfcompletedicon.png"),
                       "3",
                     ),
@@ -115,12 +120,37 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     mainOptionsBottomForTabs(
                       context,
-                      "Compressed Images",
+                      "Compressed Images".tr,
                       const AssetImage("assets/compressImagescompleteIcon.png"),
                       "4",
                     ),
                   ],
                 ),
+          SizedBox(
+            height: 40,
+          ),
+          ElevatedButton.icon(
+            icon: const Icon(
+              Icons.language_rounded,
+              size: 22,
+            ),
+            label: Text(
+              "Change Language".tr,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "DM Sans",
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              backgroundColor: Colors.black,
+            ),
+            onPressed: () {
+              LanguageChangeDialog.buildDialog(context);
+            },
+          ),
         ]),
       ),
     );
